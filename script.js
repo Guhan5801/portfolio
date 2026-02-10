@@ -270,4 +270,73 @@ window.addEventListener('load', () => {
     document.body.classList.add('loaded');
 });
 
+// Video Modal Functionality
+const videoModal = document.getElementById('demo-video');
+const demoButtons = document.querySelectorAll('a[href="#demo-video"]');
+const closeModal = document.querySelector('.close-modal');
+
+demoButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Demo button clicked - opening modal');
+        videoModal.classList.add('active');
+        // Load video when modal opens (if using data-src)
+        const iframe = videoModal.querySelector('iframe');
+        if (iframe && iframe.dataset.src && !iframe.src) {
+            console.log('Loading video from data-src');
+            iframe.src = iframe.dataset.src;
+        }
+        console.log('Modal should be visible now');
+    });
+});
+
+if (closeModal) {
+    closeModal.addEventListener('click', () => {
+        console.log('Close button clicked');
+        videoModal.classList.remove('active');
+        // Pause video by reloading iframe
+        const iframe = videoModal.querySelector('iframe');
+        if (iframe && iframe.src) {
+            const iframeSrc = iframe.src;
+            iframe.src = '';
+            setTimeout(() => {
+                iframe.src = iframeSrc;
+            }, 100);
+        }
+    });
+}
+
+// Close modal when clicking outside
+if (videoModal) {
+    videoModal.addEventListener('click', (e) => {
+        if (e.target === videoModal) {
+            videoModal.classList.remove('active');
+            // Stop video playback
+            const iframe = videoModal.querySelector('iframe');
+            if (iframe && iframe.src) {
+                const iframeSrc = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = iframeSrc;
+                }, 100);
+            }
+        }
+    });
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && videoModal && videoModal.classList.contains('active')) {
+        videoModal.classList.remove('active');
+        const iframe = videoModal.querySelector('iframe');
+        if (iframe && iframe.src) {
+            const iframeSrc = iframe.src;
+            iframe.src = '';
+            setTimeout(() => {
+                iframe.src = iframeSrc;
+            }, 100);
+        }
+    }
+});
+
 console.log('Portfolio loaded successfully! ✨');
