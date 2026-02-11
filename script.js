@@ -2,48 +2,59 @@
 // ANIMATED BACKGROUND EFFECTS
 // ========================================
 
-// Create floating particles
+// Create floating particles with variety
 function createParticles() {
     const particleContainer = document.getElementById('particles');
-    const particleCount = 50;
+    const particleCount = 80; // Increased from 50
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Random size between 2-6px
-        const size = Math.random() * 4 + 2;
+        // Varied sizes between 2-8px
+        const size = Math.random() * 6 + 2;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         
         // Random horizontal position
         particle.style.left = `${Math.random() * 100}%`;
         
-        // Random animation duration between 10-30s
-        const duration = Math.random() * 20 + 10;
+        // Random animation duration between 8-35s
+        const duration = Math.random() * 27 + 8;
         particle.style.animationDuration = `${duration}s`;
         
-        // Random delay
-        particle.style.animationDelay = `${Math.random() * 10}s`;
+        // Random delay for staggered effect
+        particle.style.animationDelay = `${Math.random() * 15}s`;
         
         particleContainer.appendChild(particle);
     }
 }
 
-// Mouse follower effect
+// Enhanced Mouse follower effect with color change
 const mouseFollower = document.getElementById('mouseFollower');
 let mouseX = 0;
 let mouseY = 0;
 let followerX = 0;
 let followerY = 0;
+let isMouseMoving = false;
+let mouseTimeout;
 
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     mouseFollower.style.opacity = '1';
+    
+    isMouseMoving = true;
+    clearTimeout(mouseTimeout);
+    
+    // Hide follower after 2 seconds of no movement
+    mouseTimeout = setTimeout(() => {
+        isMouseMoving = false;
+        mouseFollower.style.opacity = '0';
+    }, 2000);
 });
 
-// Smooth follow animation
+// Smooth follow animation with easing
 function animateFollower() {
     const dx = mouseX - followerX;
     const dy = mouseY - followerY;
@@ -57,10 +68,79 @@ function animateFollower() {
     requestAnimationFrame(animateFollower);
 }
 
+// Add ripple effect on button click
+function createRipple(event) {
+    const button = event.currentTarget;
+    const ripple = document.createElement('span');
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.classList.add('ripple-effect');
+    
+    button.appendChild(ripple);
+    
+    setTimeout(() => {
+        ripple.remove();
+    }, 600);
+}
+
+// Add magnetic effect to buttons
+function addMagneticEffect() {
+    const buttons = document.querySelectorAll('.btn');
+    
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', (e) => {
+            button.style.transition = 'transform 0.1s ease';
+        });
+        
+        button.addEventListener('mousemove', (e) => {
+            const rect = button.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            button.style.transform = 'translate(0, 0) scale(1)';
+        });
+        
+        // Add click ripple effect
+        button.addEventListener('click', createRipple);
+    });
+}
+
 // Initialize animations
 document.addEventListener('DOMContentLoaded', () => {
     createParticles();
     animateFollower();
+    addMagneticEffect();
+    
+    // Add CSS for ripple effect dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
 });
 
 // Mobile Menu Toggle
