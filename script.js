@@ -1,3 +1,68 @@
+// ========================================
+// ANIMATED BACKGROUND EFFECTS
+// ========================================
+
+// Create floating particles
+function createParticles() {
+    const particleContainer = document.getElementById('particles');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random size between 2-6px
+        const size = Math.random() * 4 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random horizontal position
+        particle.style.left = `${Math.random() * 100}%`;
+        
+        // Random animation duration between 10-30s
+        const duration = Math.random() * 20 + 10;
+        particle.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        particle.style.animationDelay = `${Math.random() * 10}s`;
+        
+        particleContainer.appendChild(particle);
+    }
+}
+
+// Mouse follower effect
+const mouseFollower = document.getElementById('mouseFollower');
+let mouseX = 0;
+let mouseY = 0;
+let followerX = 0;
+let followerY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    mouseFollower.style.opacity = '1';
+});
+
+// Smooth follow animation
+function animateFollower() {
+    const dx = mouseX - followerX;
+    const dy = mouseY - followerY;
+    
+    followerX += dx * 0.1;
+    followerY += dy * 0.1;
+    
+    mouseFollower.style.left = `${followerX}px`;
+    mouseFollower.style.top = `${followerY}px`;
+    
+    requestAnimationFrame(animateFollower);
+}
+
+// Initialize animations
+document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    animateFollower();
+});
+
 // Mobile Menu Toggle
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
