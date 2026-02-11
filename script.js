@@ -1,36 +1,36 @@
 // ========================================
-// ANIMATED BACKGROUND EFFECTS
+// ANIMATED BACKGROUND EFFECTS WITH 3D
 // ========================================
 
-// Create floating particles with variety
+// Create floating particles with variety and 3D effects
 function createParticles() {
     const particleContainer = document.getElementById('particles');
-    const particleCount = 80; // Increased from 50
+    const particleCount = 100; // Increased for richer effect
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Varied sizes between 2-8px
-        const size = Math.random() * 6 + 2;
+        // Varied sizes between 3-10px
+        const size = Math.random() * 7 + 3;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         
         // Random horizontal position
         particle.style.left = `${Math.random() * 100}%`;
         
-        // Random animation duration between 8-35s
-        const duration = Math.random() * 27 + 8;
+        // Random animation duration between 6-40s
+        const duration = Math.random() * 34 + 6;
         particle.style.animationDuration = `${duration}s`;
         
         // Random delay for staggered effect
-        particle.style.animationDelay = `${Math.random() * 15}s`;
+        particle.style.animationDelay = `${Math.random() * 20}s`;
         
         particleContainer.appendChild(particle);
     }
 }
 
-// Enhanced Mouse follower effect with color change
+// Enhanced Mouse follower effect with 3D and color change
 const mouseFollower = document.getElementById('mouseFollower');
 let mouseX = 0;
 let mouseY = 0;
@@ -59,8 +59,8 @@ function animateFollower() {
     const dx = mouseX - followerX;
     const dy = mouseY - followerY;
     
-    followerX += dx * 0.1;
-    followerY += dy * 0.1;
+    followerX += dx * 0.12;
+    followerY += dy * 0.12;
     
     mouseFollower.style.left = `${followerX}px`;
     mouseFollower.style.top = `${followerY}px`;
@@ -68,34 +68,57 @@ function animateFollower() {
     requestAnimationFrame(animateFollower);
 }
 
-// Add ripple effect on button click
-function createRipple(event) {
+// 3D Ripple effect with particles on button click
+function create3DRipple(event) {
     const button = event.currentTarget;
-    const ripple = document.createElement('span');
     const rect = button.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
+    
+    // Create main ripple
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height) * 2;
     const x = event.clientX - rect.left - size / 2;
     const y = event.clientY - rect.top - size / 2;
     
     ripple.style.width = ripple.style.height = size + 'px';
     ripple.style.left = x + 'px';
     ripple.style.top = y + 'px';
-    ripple.classList.add('ripple-effect');
+    ripple.classList.add('ripple-effect-3d');
     
     button.appendChild(ripple);
     
+    // Create explosion particles
+    for (let i = 0; i < 12; i++) {
+        const particle = document.createElement('span');
+        particle.classList.add('click-particle');
+        particle.style.left = (event.clientX - rect.left) + 'px';
+        particle.style.top = (event.clientY - rect.top) + 'px';
+        
+        const angle = (Math.PI * 2 * i) / 12;
+        const velocity = 50 + Math.random() * 50;
+        particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+        particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+        
+        button.appendChild(particle);
+        
+        setTimeout(() => particle.remove(), 1000);
+    }
+    
+    setTimeout(() => ripple.remove(), 800);
+    
+    // Add shake effect
+    button.style.animation = 'buttonShake 0.3s ease';
     setTimeout(() => {
-        ripple.remove();
-    }, 600);
+        button.style.animation = '';
+    }, 300);
 }
 
-// Add magnetic effect to buttons
-function addMagneticEffect() {
+// Add magnetic and 3D effect to buttons
+function addMagnetic3DEffect() {
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach(button => {
         button.addEventListener('mouseenter', (e) => {
-            button.style.transition = 'transform 0.1s ease';
+            button.style.transition = 'transform 0.15s ease';
         });
         
         button.addEventListener('mousemove', (e) => {
@@ -103,16 +126,25 @@ function addMagneticEffect() {
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             
-            button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`;
+            const rotateX = (y / rect.height) * 20;
+            const rotateY = -(x / rect.width) * 20;
+            
+            button.style.transform = `
+                translate(${x * 0.15}px, ${y * 0.15}px) 
+                rotateX(${rotateX}deg) 
+                rotateY(${rotateY}deg) 
+                scale(1.05)
+                translateZ(20px)
+            `;
         });
         
         button.addEventListener('mouseleave', () => {
-            button.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-            button.style.transform = 'translate(0, 0) scale(1)';
+            button.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            button.style.transform = 'translate(0, 0) rotateX(0) rotateY(0) scale(1) translateZ(0)';
         });
         
-        // Add click ripple effect
-        button.addEventListener('click', createRipple);
+        // Add 3D click ripple effect
+        button.addEventListener('click', create3DRipple);
     });
 }
 
@@ -120,24 +152,63 @@ function addMagneticEffect() {
 document.addEventListener('DOMContentLoaded', () => {
     createParticles();
     animateFollower();
-    addMagneticEffect();
+    addMagnetic3DEffect();
     
-    // Add CSS for ripple effect dynamically
+    // Add CSS for 3D effects dynamically
     const style = document.createElement('style');
     style.textContent = `
-        .ripple-effect {
+        .ripple-effect-3d {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            animation: ripple-animation 0.6s ease-out;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+            animation: ripple3d-animation 0.8s ease-out;
             pointer-events: none;
+            transform-style: preserve-3d;
         }
         
-        @keyframes ripple-animation {
-            to {
-                transform: scale(2);
+        @keyframes ripple3d-animation {
+            0% {
+                transform: scale(0) translateZ(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) translateZ(50px);
                 opacity: 0;
             }
+        }
+        
+        .click-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffd93d, #ff6b6b);
+            pointer-events: none;
+            animation: particle-explode 1s ease-out forwards;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+        }
+        
+        @keyframes particle-explode {
+            0% {
+                transform: translate(0, 0) scale(1) translateZ(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0) translateZ(30px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes buttonShake {
+            0%, 100% { transform: translateX(0) rotateZ(0deg); }
+            25% { transform: translateX(-5px) rotateZ(-2deg); }
+            75% { transform: translateX(5px) rotateZ(2deg); }
+        }
+        
+        /* 3D perspective for body */
+        body {
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
     `;
     document.head.appendChild(style);
