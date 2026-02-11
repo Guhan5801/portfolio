@@ -1,36 +1,36 @@
 // ========================================
-// ANIMATED BACKGROUND EFFECTS WITH 3D
+// STARRY NIGHT ANIMATED BACKGROUND WITH 3D
 // ========================================
 
-// Create floating particles with variety and 3D effects
+// Create twinkling stars with variety and 3D effects
 function createParticles() {
     const particleContainer = document.getElementById('particles');
-    const particleCount = 100; // Increased for richer effect
+    const particleCount = 150; // Increased for starry night effect
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Varied sizes between 3-10px
-        const size = Math.random() * 7 + 3;
+        // Varied sizes between 2-10px for star variety
+        const size = Math.random() * 8 + 2;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         
         // Random horizontal position
         particle.style.left = `${Math.random() * 100}%`;
         
-        // Random animation duration between 6-40s
-        const duration = Math.random() * 34 + 6;
-        particle.style.animationDuration = `${duration}s`;
+        // Random animation duration between 5-45s for varied movement
+        const duration = Math.random() * 40 + 5;
+        particle.style.animationDuration = `${duration}s, ${Math.random() * 3 + 2}s`;
         
-        // Random delay for staggered effect
-        particle.style.animationDelay = `${Math.random() * 20}s`;
+        // Random delay for staggered twinkling effect
+        particle.style.animationDelay = `${Math.random() * 25}s, ${Math.random() * 3}s`;
         
         particleContainer.appendChild(particle);
     }
 }
 
-// Enhanced Mouse follower effect with 3D and color change
+// Enhanced Mouse follower effect with blue glow
 const mouseFollower = document.getElementById('mouseFollower');
 let mouseX = 0;
 let mouseY = 0;
@@ -68,7 +68,7 @@ function animateFollower() {
     requestAnimationFrame(animateFollower);
 }
 
-// 3D Ripple effect with particles on button click
+// 3D Ripple effect with glittering particles on button click
 function create3DRipple(event) {
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
@@ -86,21 +86,21 @@ function create3DRipple(event) {
     
     button.appendChild(ripple);
     
-    // Create explosion particles
-    for (let i = 0; i < 12; i++) {
+    // Create glittering explosion particles
+    for (let i = 0; i < 16; i++) {
         const particle = document.createElement('span');
         particle.classList.add('click-particle');
         particle.style.left = (event.clientX - rect.left) + 'px';
         particle.style.top = (event.clientY - rect.top) + 'px';
         
-        const angle = (Math.PI * 2 * i) / 12;
-        const velocity = 50 + Math.random() * 50;
+        const angle = (Math.PI * 2 * i) / 16;
+        const velocity = 60 + Math.random() * 60;
         particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
         particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
         
         button.appendChild(particle);
         
-        setTimeout(() => particle.remove(), 1000);
+        setTimeout(() => particle.remove(), 1200);
     }
     
     setTimeout(() => ripple.remove(), 800);
@@ -154,13 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
     animateFollower();
     addMagnetic3DEffect();
     
-    // Add CSS for 3D effects dynamically
+    // Add CSS for 3D effects dynamically - BLUE THEME
     const style = document.createElement('style');
     style.textContent = `
         .ripple-effect-3d {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(34, 211, 238, 0.5) 50%, transparent 100%);
             animation: ripple3d-animation 0.8s ease-out;
             pointer-events: none;
             transform-style: preserve-3d;
@@ -182,10 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: radial-gradient(circle, #ffd93d, #ff6b6b);
+            background: radial-gradient(circle, #22d3ee, #3b82f6);
             pointer-events: none;
-            animation: particle-explode 1s ease-out forwards;
-            box-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+            animation: particle-explode 1.2s ease-out forwards, twinkle-particle 0.3s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.9), 0 0 30px rgba(34, 211, 238, 0.6);
         }
         
         @keyframes particle-explode {
@@ -194,9 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 opacity: 1;
             }
             100% {
-                transform: translate(var(--tx), var(--ty)) scale(0) translateZ(30px);
+                transform: translate(var(--tx), var(--ty)) scale(0) translateZ(40px);
                 opacity: 0;
             }
+        }
+        
+        @keyframes twinkle-particle {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(2); }
         }
         
         @keyframes buttonShake {
