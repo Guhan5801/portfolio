@@ -5,7 +5,7 @@
 // Create twinkling stars with variety and 3D effects
 function createParticles() {
     const particleContainer = document.getElementById('particles');
-    const particleCount = 150; // Increased for starry night effect
+    const particleCount = 110;
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -19,9 +19,9 @@ function createParticles() {
         // Random horizontal position
         particle.style.left = `${Math.random() * 100}%`;
         
-        // Random animation duration between 5-45s for varied movement
-        const duration = Math.random() * 40 + 5;
-        particle.style.animationDuration = `${duration}s, ${Math.random() * 3 + 2}s`;
+        // Slightly slower and softer movement
+        const duration = Math.random() * 35 + 8;
+        particle.style.animationDuration = `${duration}s, ${Math.random() * 3 + 3}s`;
         
         // Random delay for staggered twinkling effect
         particle.style.animationDelay = `${Math.random() * 25}s, ${Math.random() * 3}s`;
@@ -59,8 +59,8 @@ function animateFollower() {
     const dx = mouseX - followerX;
     const dy = mouseY - followerY;
     
-    followerX += dx * 0.12;
-    followerY += dy * 0.12;
+    followerX += dx * 0.09;
+    followerY += dy * 0.09;
     
     mouseFollower.style.left = `${followerX}px`;
     mouseFollower.style.top = `${followerY}px`;
@@ -87,14 +87,14 @@ function create3DRipple(event) {
     button.appendChild(ripple);
     
     // Create glittering explosion particles
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 10; i++) {
         const particle = document.createElement('span');
         particle.classList.add('click-particle');
         particle.style.left = (event.clientX - rect.left) + 'px';
         particle.style.top = (event.clientY - rect.top) + 'px';
         
-        const angle = (Math.PI * 2 * i) / 16;
-        const velocity = 60 + Math.random() * 60;
+        const angle = (Math.PI * 2 * i) / 10;
+        const velocity = 40 + Math.random() * 40;
         particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
         particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
         
@@ -106,7 +106,7 @@ function create3DRipple(event) {
     setTimeout(() => ripple.remove(), 800);
     
     // Add shake effect
-    button.style.animation = 'buttonShake 0.3s ease';
+    button.style.animation = 'buttonShake 0.2s ease';
     setTimeout(() => {
         button.style.animation = '';
     }, 300);
@@ -118,7 +118,7 @@ function addMagnetic3DEffect() {
     
     buttons.forEach(button => {
         button.addEventListener('mouseenter', (e) => {
-            button.style.transition = 'transform 0.15s ease';
+            button.style.transition = 'transform 0.2s ease';
         });
         
         button.addEventListener('mousemove', (e) => {
@@ -126,15 +126,15 @@ function addMagnetic3DEffect() {
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             
-            const rotateX = (y / rect.height) * 20;
-            const rotateY = -(x / rect.width) * 20;
+            const rotateX = (y / rect.height) * 10;
+            const rotateY = -(x / rect.width) * 10;
             
             button.style.transform = `
-                translate(${x * 0.15}px, ${y * 0.15}px) 
+                translate(${x * 0.08}px, ${y * 0.08}px) 
                 rotateX(${rotateX}deg) 
                 rotateY(${rotateY}deg) 
-                scale(1.05)
-                translateZ(20px)
+                scale(1.02)
+                translateZ(10px)
             `;
         });
         
@@ -259,7 +259,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const typingText = document.querySelector('.typing-text');
 const phrases = [
     'Prompt Engineer',
-    'UI/UX Designer'
+    'AI Specialist'
 ];
 
 let phraseIndex = 0;
