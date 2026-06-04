@@ -1,603 +1,946 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guhan - Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Guhan C | AI Fullstack Developer</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Guhan C - Prompt Engineering Specialist. Specializing in Prompt Design, AI Optimization, NLP, and UI/UX. Pursuing BE Computer Science.">
+    <meta name="keywords" content="Prompt Engineer, AI Specialist, Guhan C, Guhan Chinnasamy, Web Developer, NLP, Figma, Python">
+    <meta name="author" content="Guhan C">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Guhan C | AI Fullstack Developer">
+    <meta property="og:description" content="Portfolio of Guhan C, specializing in Prompt Design, NLP, AI Optimization, and Interface design.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css?v=2.1">
+    <style>
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-name-gradient {
+            background: linear-gradient(270deg, #22d3ee, #a78bfa, #22d3ee);
+            background-size: 200% 200%;
+            animation: gradient-shift 4s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
 </head>
-<body>
-    <!-- Animated Background Elements -->
-    <div class="animation-wrapper">
-        <div class="particle-container" id="particles"></div>
-        <div class="gradient-bg">
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="gradient-orb orb-3"></div>
-            <div class="gradient-orb orb-4"></div>
-        </div>
-        <div class="mouse-follower" id="mouseFollower"></div>
+<body class="text-slate-200 selection:bg-cyan-500/30 multi-cursor-active overflow-x-hidden min-h-screen bg-slate-950">
+
+    <!-- Scroll Progress Bar at the top -->
+    <div class="fixed top-0 left-0 right-0 h-1 bg-cyan-500/30 z-[60]" role="progressbar">
+        <div id="scroll-progress-bar" class="h-full bg-cyan-500 transition-all duration-150" style="width: 0%"></div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-name">G</span>
-                <span class="logo-text">Guhan</span>
+    <!-- Background Starfield Canvas -->
+    <div class="fixed inset-0 z-0 h-full w-full pointer-events-none select-none overflow-hidden bg-black">
+        <canvas id="bg-canvas" class="hyperspeed-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; background: black;"></canvas>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-700/50">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <a href="#hero" class="text-xl font-bold text-cyan-400">Guhan C</a>
+                    <span class="hidden sm:inline px-2 py-0.5 text-xs rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">AI Fullstack Developer @ Crescent Moon</span>
+                </div>
+                <div class="hidden md:flex md:items-center md:gap-1" id="nav-links">
+                    <a href="#hero" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">Home</a>
+                    <a href="#about" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">About</a>
+                    <a href="#skills" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">Skills</a>
+                    <a href="#experience" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">Experience</a>
+                    <a href="#projects" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">Projects</a>
+                    <a href="#certifications" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">Certifications</a>
+                    <a href="#contact" class="block px-4 py-2 text-slate-300 hover:text-cyan-400 transition-colors">Contact</a>
+                </div>
+                <div class="flex items-center gap-1">
+                    <a href="Guhan_Resume_22CSR038.pdf" download class="hidden md:flex items-center gap-1 px-3 py-1.5 text-sm text-slate-300 hover:text-cyan-400 transition-colors">
+                        Resume
+                    </a>
+                    <button id="menu-btn" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Toggle menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path id="menu-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <!-- <li><a href="#education" class="nav-link">Education</a></li> -->
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><a href="Guhan_Resume_22CSR038.pdf" download class="nav-link">Resume</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+        </div>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800">
+            <a href="#hero" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Home</a>
+            <a href="#about" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">About</a>
+            <a href="#skills" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Skills</a>
+            <a href="#experience" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Experience</a>
+            <a href="#projects" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Projects</a>
+            <a href="#certifications" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Certifications</a>
+            <a href="#contact" class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Contact</a>
+            <a href="Guhan_Resume_22CSR038.pdf" download class="block px-6 py-3 text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-colors">Resume</a>
         </div>
     </nav>
 
-    <!-- Home Section -->
-    <section id="home" class="home-section">
-        <div class="container">
-            <div class="home-content">
-                <div class="text-content">
-                    <h1 class="glitch" data-text="Hi, I'm Guhan C">Hi, I'm Guhan C</h1>
-                    <div class="typing-container">
-                        <h2>I'm a <span class="typing-text"></span></h2>
+    <!-- Main Container -->
+    <main class="relative z-10">
+
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex flex-col items-center justify-center px-6 pt-20 bg-transparent relative overflow-hidden">
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <p class="text-cyan-400 font-mono text-sm mb-4 tracking-wider uppercase">AI Fullstack Developer</p>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
+                    Hi, I'm <span class="hero-name-gradient">Guhan C</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-400 mb-2 h-9 md:h-10">
+                    <span id="typewriter-text"></span><span class="inline-block w-0.5 h-6 md:h-7 bg-cyan-400 ml-0.5 align-middle animate-pulse">|</span>
+                </p>
+                <p class="text-slate-500 flex items-center justify-center gap-2 mt-4 text-sm md:text-base">
+                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Kangayam, Tiruppur Dist, Tamil Nadu, India
+                </p>
+                <div class="flex flex-wrap justify-center gap-8 mt-8 text-slate-400">
+                    <div>
+                        <span class="text-2xl font-bold text-cyan-400">6+</span>
+                        <span class="text-sm ml-1">Systems Deployed</span>
                     </div>
-                    <p class="home-description">
-                        Prompt Engineer
-                    </p>
-                    <div class="cta-buttons">
-                        <a href="#projects" class="btn btn-primary">Explore My Work</a>
-                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
-                        <a href="Guhan_Resume_22CSR038.pdf" download class="btn btn-resume"><i class="fas fa-download"></i> Download Resume</a>
+                    <div>
+                        <span class="text-2xl font-bold text-cyan-400">6+</span>
+                        <span class="text-sm ml-1">Projects</span>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-cyan-400">3</span>
+                        <span class="text-sm ml-1">Certifications</span>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold text-cyan-400">100%</span>
+                        <span class="text-sm ml-1">AI Optimization</span>
                     </div>
                 </div>
-                <div class="home-image">
-                    <div class="image-wrapper">
-                        <div class="profile-img">G</div>
-                    </div>
+                <div class="flex gap-4 mt-12 justify-center flex-wrap items-center">
+                    <a href="#projects" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-semibold rounded-lg transition-colors">View Projects</a>
+                    <a href="#contact" class="px-6 py-3 bg-cyan-500/10 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500 hover:text-slate-900 font-bold rounded-lg transition-all duration-300">Reach Out</a>
+                    <a href="https://github.com/Guhan5801" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300" aria-label="GitHub">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/guhan-c-" target="_blank" rel="noopener noreferrer" class="p-3 rounded-lg bg-white/5 border border-white/10 text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 transition-all duration-300" aria-label="LinkedIn">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
-            <div class="scroll-indicator">
-                <a href="#about">
-                    <i class="fas fa-chevron-down"></i>
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                <a href="#about" class="text-slate-500 hover:text-cyan-400 transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
                 </a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">About Me</h2>
-                <div class="title-underline"></div>
-            </div>
-            <div class="about-content">
-                <div class="about-cards">
-                    <div class="about-card glass-card">
-                        <div class="card-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3>Mission Statement</h3>
-                        <p>
-                            I'm a passionate prompt engineering specialist creating 
-                            innovative digital experiences. I focus on building intuitive interfaces and crafting 
-                            intelligent prompts that solve real-world problems using AI technologies.
-                        </p>
+        <!-- About Section -->
+        <section id="about" class="py-24 px-6 bg-transparent relative">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">About <span class="text-cyan-400">Me</span></h2>
+                <div class="space-y-6 text-slate-400 leading-relaxed text-base md:text-lg">
+                    <p>I am an AI Fullstack Developer at Crescent Moon, specializing in developing and integrating intelligent systems with robust full-stack architectures. Currently pursuing my Bachelor of Engineering in Computer Science at Velalar College of Engineering and Technology, I build and deploy live production projects, explore NLP systems, semantic sentiment analyzers, and advanced agentic workflows.</p>
+                    <p>My work revolves around engineering scalable backends, responsive frontends, and seamless AI agent integrations that solve real-world problems. I focus on optimizing LLM context, minimizing application latency, and creating user-centered digital solutions that leverage cutting-edge artificial intelligence.</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-4">Engineering Practices</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> System Prompt Design</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Context Window Optimization</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Semantic Sentiment Analytics</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Interface Prototyping (Figma)</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Database Management & Caching</li>
+                        </ul>
                     </div>
-                    <div class="about-card glass-card">
-                        <div class="card-icon">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <h3>Journey & Growth</h3>
-                        <p>
-                            My journey encompasses interface design and prompt engineering. I've worked on 
-                            diverse projects including AI-powered systems, semantic analysis tools, Tamil language 
-                            processing, and modern web interfaces combining design principles with prompt optimization.
-                        </p>
-                    </div>
-                    <div class="about-card glass-card">
-                        <div class="card-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <h3>Experience</h3>
-                        <p>
-                            Experience in interface design and prompt engineering projects including AI-based recommendation 
-                            systems, sentiment analysis tools, and web applications. Passionate about creating 
-                            user-centered designs and optimized prompts that make a real impact.
-                        </p>
+                    <div>
+                        <h3 class="text-lg font-semibold text-cyan-400 mb-4">Career Interests</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Agentic AI Workflows</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Large Language Model Fine-Tuning</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Full-Stack AI Integration</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Human-AI Collaborative Interfaces</li>
+                            <li class="flex items-center gap-2 text-slate-400"><span class="text-cyan-500">▹</span> Algorithmic Research Systems</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="stats-container">
-                    <div class="stat-item glass-card">
-                        <div class="stat-icon"><i class="fas fa-code"></i></div>
-                        <div class="stat-content">
-                            <h3>Interface & Prompts</h3>
-                            <p>Basics</p>
-                        </div>
-                    </div>
-                    <div class="stat-item glass-card">
-                        <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
-                        <div class="stat-content">
-                            <h3>6</h3>
-                            <p>Projects</p>
-                        </div>
-                    </div>
-                    <div class="stat-item glass-card">
-                        <div class="stat-icon"><i class="fas fa-award"></i></div>
-                        <div class="stat-content">
-                            <h3>Fresher</h3>
-                            <p></p>
-                        </div>
-                    </div>
-                    <!-- <div class="stat-item glass-card">
-                        <div class="stat-icon"><i class="fas fa-infinity"></i></div>
-                        <div class="stat-content">
-                            <h3>∞</h3>
-                            <p>Curiosity</p>
-                        </div>
-                    </div> -->
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Skills & Technologies</h2>
-                <p class="section-subtitle">Tools and technologies I use to build amazing experiences</p>
-                <div class="title-underline"></div>
-            </div>
-            <div class="skills-content">
-                <div class="skill-category glass-card">
-                    <div class="category-header">
-                        <i class="fas fa-laptop-code"></i>
-                        <h3>Design & Frontend</h3>
-                        <span class="tech-count">6 technologies</span>
-                    </div>
-                    <div class="tech-tags">
-                        <span class="tech-tag">HTML5</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Figma</span>
-                        <span class="tech-tag">Photoshop</span>
-                        <span class="tech-tag">Illustrator</span>
-                    </div>
-                </div>
-                <div class="skill-category glass-card">
-                    <div class="category-header">
-                        <i class="fas fa-server"></i>
-                        <h3>Prompt Engineering & AI</h3>
-                        <span class="tech-count">6 technologies</span>
-                    </div>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Prompt Design</span>
-                        <span class="tech-tag">ChatGPT</span>
-                        <span class="tech-tag">Claude</span>
-                        <span class="tech-tag">Gemini</span>
-                        <span class="tech-tag">NLP</span>
-                        <span class="tech-tag">AI Optimization</span>
-                    </div>
-                </div>
-                <div class="skill-category glass-card">
-                    <div class="category-header">
-                        <i class="fas fa-tools"></i>
-                        <h3>Tools & Platforms</h3>
-                        <span class="tech-count">5 technologies</span>
-                    </div>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Git</span>
-                        <span class="tech-tag">GitHub</span>
-                        <span class="tech-tag">VS Code</span>
-                        <span class="tech-tag">cluad</span>
-                        <span class="tech-tag"></span>
-                    </div>
-                </div>
-                <div class="skill-category glass-card">
-                    <div class="category-header">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>Programming Languages</h3>
-                        <span class="tech-count">4 technologies</span>
-                    </div>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">C</span>
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">HTML/CSS</span>
-                    </div>
+        <!-- Tech Stack Marquee Section -->
+        <section class="marquee-section overflow-hidden relative">
+            <div class="marquee-spotlight-css"></div>
+            <div class="max-w-6xl mx-auto px-6 pt-10 mb-4">
+                <p class="marquee-title text-2xl font-bold text-white mb-4">Tech Stack</p>
+                <div class="filter-bar flex flex-wrap gap-2" id="marquee-filters">
+                    <button class="filter-pill filter-pill-active" data-cat="all">All</button>
+                    <button class="filter-pill" data-cat="language" style="--pill-color: 96,165,250">Languages</button>
+                    <button class="filter-pill" data-cat="backend" style="--pill-color: 52,211,153">Backend</button>
+                    <button class="filter-pill" data-cat="frontend" style="--pill-color: 34,211,238">Frontend</button>
+                    <button class="filter-pill" data-cat="database" style="--pill-color: 251,146,60">Databases</button>
+                    <button class="filter-pill" data-cat="cloud" style="--pill-color: 250,204,21">Cloud & Tools</button>
+                    <button class="filter-pill" data-cat="ai" style="--pill-color: 192,132,252">AI & NLP</button>
                 </div>
             </div>
-            <div class="skills-summary">
-                <!-- <div class="summary-item glass-card">
-                    <h3>20+</h3>
-                    <p>Technologies</p>
-                </div> -->
-                <div class="summary-item glass-card">
-                    <h3>Fresher</h3>
-                    <p>Years Learning</p>
+            <div class="marquee-container relative flex flex-col gap-4 py-4">
+                <div class="marquee-track marquee-row-1 marquee-entered" id="marquee-row-1">
+                    <!-- Populated via script.js -->
                 </div>
-                <div class="summary-item glass-card">
-                    <h3>6</h3>
-                    <p>Projects Complete</p>
-                </div>
-                <div class="summary-item glass-card">
-                    <h3>∞</h3>
-                    <p>Curiosity</p>
+                <div class="marquee-track marquee-row-2 marquee-entered" id="marquee-row-2">
+                    <!-- Populated via script.js -->
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-subtitle">Explore the projects I've built across various domains</p>
-                <div class="title-underline"></div>
-            </div>
-            <div class="projects-grid">
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <h3>AI-Based Intern Recommendation</h3>
-                        <span class="project-status">Completed</span>
+        <!-- Skills Grid Section -->
+        <section id="skills" class="py-24 px-6 bg-transparent relative">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Skills & <span class="text-cyan-400">Expertise</span></h2>
+                <p class="text-slate-400 mb-12 max-w-2xl text-base md:text-lg leading-relaxed">
+                    Expertise in prompt design, natural language processing models, responsive frontend user interfaces, and custom database integrations.
+                </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="skills-grid">
+                    
+                    <!-- Languages -->
+                    <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="text-2xl">💻</span>
+                                <h3 class="text-lg font-semibold text-cyan-400">Programming Languages</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Python</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">C</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">JavaScript</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Dart (Flutter)</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">SQL</span>
+                            </div>
+                        </div>
                     </div>
-                    <p class="project-description">
-                        An AI-powered resume analysis engine that extracts skills, education, contact info, 
-                        and interests using text parsing, regex entity extraction, and keyword classification.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-badge">Python</span>
-                        <span class="tech-badge">Designing</span>
-                        <span class="tech-badge">Machine Learning</span>
-                        <span class="tech-badge"></span>
+
+                    <!-- AI & NLP -->
+                    <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="text-2xl">🤖</span>
+                                <h3 class="text-lg font-semibold text-cyan-400">AI & NLP Engineering</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Prompt Design</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">NLP Systems</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Regex Parsing</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Context Optimization</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">System Prompts</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Guhan5801/AI-based-intern-recommodation" target="_blank" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
+
+                    <!-- Frontend -->
+                    <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="text-2xl">🎨</span>
+                                <h3 class="text-lg font-semibold text-cyan-400">Design & Frontend</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">HTML5 / CSS3</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">JavaScript (ES6+)</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Figma Essentials</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Photoshop</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Illustrator</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Responsive UI</span>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Databases -->
+                    <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="text-2xl">🗄️</span>
+                                <h3 class="text-lg font-semibold text-cyan-400">Databases</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Supabase</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Hive DB</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">PostgreSQL</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">SQLite</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cloud -->
+                    <div class="p-6 rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="text-2xl">☁️</span>
+                                <h3 class="text-lg font-semibold text-cyan-400">Cloud & Tools</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Git & GitHub</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">VS Code</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">FastAPI</span>
+                                <span class="px-3 py-1 text-sm bg-slate-800 text-slate-300 rounded-full">Vercel Deployment</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+        </section>
+
+        <!-- Experience Timeline Section -->
+        <section id="experience" class="py-24 px-6 bg-transparent relative">
+            <!-- Timeline styles -->
+            <style>
+                @keyframes timeline-glow {
+                    0%, 100% { box-shadow: 0 0 6px rgba(34,211,238,0.4); }
+                    50% { box-shadow: 0 0 14px rgba(34,211,238,0.7); }
+                }
+            </style>
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Work & <span class="text-cyan-400">Education</span></h2>
+                <p class="text-slate-400 mb-12">Tracking my studies, professional experience, and generative AI projects.</p>
+                <div class="relative space-y-12" id="timeline-container">
+                    
+                    <!-- Animated vertical progress line -->
+                    <div class="absolute left-[7px] top-0 w-0.5 bg-gradient-to-b from-cyan-400 to-cyan-500/30 origin-top transition-transform duration-100 ease-out h-full" id="timeline-progress-line" style="transform: scaleY(0);"></div>
+                    <div class="absolute left-[7px] top-0 w-0.5 h-full bg-slate-800/50"></div>
+
+                    <!-- Item 1: Professional Experience -->
+                    <div class="tilted-card-container w-full" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="relative pl-8 border-l-2 border-cyan-500/50 hover:border-cyan-400 transition-colors bg-slate-900/40 p-6 rounded-xl border border-slate-800/50" style="transform: translateZ(20px);">
+                                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-cyan-500" style="animation: timeline-glow 2s ease-in-out infinite;"></div>
+                                <div class="mb-2">
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <h3 class="text-xl font-semibold text-white">AI Fullstack Developer</h3>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-full animate-pulse">Present</span>
+                                    </div>
+                                    <p class="text-cyan-400 font-medium">Crescent Moon</p>
+                                    <p class="text-slate-500 text-sm mt-1">2026 - Present</p>
+                                </div>
+                                <ul class="space-y-2 mt-4">
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Developing and deploying live production applications with deep AI model integration.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Engineering full-stack architectures, integrating secure APIs and robust database patterns.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Taking end-to-end ownership of client-facing products from initial design concepts to cloud deployment.</span>
+                                    </li>
+                                </ul>
+                                <div class="flex flex-wrap gap-2 mt-4">
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Generative AI</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Full-Stack Development</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Live Projects</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="tilted-card-container w-full" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="relative pl-8 border-l-2 border-cyan-500/50 hover:border-cyan-400 transition-colors bg-slate-900/40 p-6 rounded-xl border border-slate-800/50" style="transform: translateZ(20px);">
+                                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-cyan-500" style="animation: timeline-glow 2s ease-in-out infinite;"></div>
+                                <div class="mb-2">
+                                    <h3 class="text-xl font-semibold text-white">B.E. Computer Science & Engineering</h3>
+                                    <p class="text-cyan-400 font-medium">Velalar College of Engineering and Technology</p>
+                                    <p class="text-slate-500 text-sm mt-1">2022 - 2026 (Expected)</p>
+                                </div>
+                                <ul class="space-y-2 mt-4">
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Acquiring deep knowledge in data structures, database schema design, and software engineering.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Investigating neural network models, prompt optimization systems, and generative AI interfaces.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Building high-performance student project utilities using Python, Dart, and local DB backends.</span>
+                                    </li>
+                                </ul>
+                                <div class="flex flex-wrap gap-2 mt-4">
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">DSA</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">DBMS</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Software Eng.</span>
+                                </div>
+                            </div>
+                             <!-- Item 3: Academic & Side Research -->
+                    <div class="tilted-card-container w-full" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="relative pl-8 border-l-2 border-cyan-500/50 hover:border-cyan-400 transition-colors bg-slate-900/40 p-6 rounded-xl border border-slate-800/50" style="transform: translateZ(20px);">
+                                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-cyan-500" style="animation: timeline-glow 2s ease-in-out infinite;"></div>
+                                <div class="mb-2">
+                                    <h3 class="text-xl font-semibold text-white">AI & NLP Applications Development</h3>
+                                    <p class="text-cyan-400 font-medium">Academic & Side Research</p>
+                                    <p class="text-slate-500 text-sm mt-1">2025</p>
+                                </div>
+                                <ul class="space-y-2 mt-4">
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Engineered a robust AI resume parser using Python regular expressions and entity extraction.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Developed the Tamil Semantic Analyzer for bilingual translation, syntax matching, and sentiment mapping.</span>
+                                    </li>
+                                </ul>
+                                <div class="flex flex-wrap gap-2 mt-4">
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Python</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">NLP</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Regex Parsing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Open Source Projects -->
+                    <div class="tilted-card-container w-full" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="relative pl-8 border-l-2 border-cyan-500/50 hover:border-cyan-400 transition-colors bg-slate-900/40 p-6 rounded-xl border border-slate-800/50" style="transform: translateZ(20px);">
+                                <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-cyan-500" style="animation: timeline-glow 2s ease-in-out infinite;"></div>
+                                <div class="mb-2">
+                                    <h3 class="text-xl font-semibold text-white">Full Stack & UI Architectures</h3>
+                                    <p class="text-cyan-400 font-medium">Open Source Projects</p>
+                                    <p class="text-slate-500 text-sm mt-1">2026</p>
+                                </div>
+                                <ul class="space-y-2 mt-4">
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Created the Flutter-based Bill-Urai system using Hive DB for local offline-first persistence.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Designed a premium high-fidelity Ticket Booking UI prototype in Figma.</span>
+                                    </li>
+                                    <li class="text-slate-400 flex gap-2">
+                                        <span class="text-cyan-500 shrink-0">▹</span>
+                                        <span>Developed FastAPI backends for real-time order matching and trading simulators.</span>
+                                    </li>
+                                </ul>
+                                <div class="flex flex-wrap gap-2 mt-4">
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Flutter</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">FastAPI</span>
+                                    <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">UI/UX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid Section -->
+        <section id="projects" class="py-24 px-6 bg-transparent relative">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Featured <span class="text-cyan-400">Projects</span></h2>
+                <p class="text-slate-400 mb-6 max-w-2xl text-base md:text-lg leading-relaxed">
+                    End-to-end ownership from design to deployment - AI resume analysis, regional language NLP sentiment mapping, and offline-first mobile systems.
+                </p>
                 
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <h3>Tamil Semantic Analyzer</h3>
-                        <span class="project-status">Completed</span>
-                    </div>
-                    <p class="project-description">
-                        Tamil Semantic Sentiment Analysis System - an AI-powered web app that analyzes Tamil text 
-                        for meaning and emotion with semantic understanding, sentiment detection, and bilingual support.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-badge">Python</span>
-                        <span class="tech-badge">NLP</span>
-                        <span class="tech-badge">Sentiment Analysis</span>
-                        <span class="tech-badge">Tamil Processing</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Guhan5801/tamil-semantic-analyzer" target="_blank" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
-                    </div>
-                </div>
-                
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <h3>Bill-Urai</h3>
-                        <span class="project-status">Completed</span>
-                    </div>
-                    <p class="project-description">
-                        Flutter-based billing app with barcode scanning and real-time product total calculation. 
-                        Hive-powered offline storage for billing data and app state persistence.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-badge">Flutter</span>
-                        <span class="tech-badge">Dart</span>
-                        <span class="tech-badge">Barcode Scanning</span>
-                        <span class="tech-badge">Hive Database</span>
-                        <span class="tech-badge">Offline Storage</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Guhan5801/-Bill-Urai.git" target="_blank" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="https://drive.google.com/file/d/1HcQZtKOQYv8l4HjL4sebixumfYM6ZKO3/view?usp=drive_link" target="_blank" class="project-btn demo-btn"><i class="fas fa-video"></i> Demo Video</a>
-                    </div>
-                </div>
-                
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <h3>Ticket Booking UI</h3>
-                        <span class="project-status">Completed</span>
-                    </div>
-                    <p class="project-description">
-                        Modern ticket booking user interface design with intuitive navigation, seat selection, 
-                        and booking flow. Focus on user experience and visual design principles.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-badge">UI Design</span>
-                        <span class="tech-badge">UX Design</span>
-                        <span class="tech-badge">Figma</span>
-                        <span class="tech-badge">Prototyping</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Guhan5801/Ticket-Booking-UI" target="_blank" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
-                    </div>
-                </div>
-                
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <h3>Intelligent Trading System</h3>
-                        <span class="project-status">Active</span>
-                    </div>
-                    <p class="project-description">
-                        AI-driven algorithmic trading system for research and learning, featuring ML-based signal generation, 
-                        multi-asset and multi-broker data integration, risk-aware execution, real-time analytics, and 
-                        interactive dashboards built with Python and FastAPI.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-badge">Python</span>
-                        <span class="tech-badge">FastAPI</span>
-                        <span class="tech-badge">Machine Learning</span>
-                        <span class="tech-badge">Trading Algorithms</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Guhan5801/Intelligent-Trading-System.git" target="_blank" class="project-btn"><i class="fab fa-github"></i> View Code</a>
-                        <a href="#demo-video" class="project-btn demo-btn"><i class="fas fa-play-circle"></i> Demo Video</a>
+                <div class="mb-8">
+                    <p class="text-slate-400 text-sm mb-2 font-mono">Filter by tech:</p>
+                    <div class="flex flex-wrap gap-2" id="projects-filter-bar">
+                        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-cyan-500 text-slate-900" data-filter="all">All</button>
+                        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="Python">Python</button>
+                        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="NLP">NLP</button>
+                        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="Flutter">Flutter</button>
+                        <button class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="UI/UX">UI/UX</button>
                     </div>
                 </div>
 
-                <div class="project-card glass-card">
-                    <div class="project-header">
-                        <h3>Erode Smart Bus Pass System</h3>
-                        <span class="project-status">Completed</span>
+                <!-- Projects grid list -->
+                <div class="grid md:grid-cols-2 gap-6" id="projects-grid">
+                    
+                    <!-- Project 1 -->
+                    <div class="tilted-card-container project-card-wrapper" data-stack="Python,NLP" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner h-full transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 h-full flex flex-col overflow-hidden" style="transform: translateZ(20px);">
+                                <div class="h-1 w-full bg-gradient-to-r from-purple-500/20 via-fuchsia-500/10 to-transparent"></div>
+                                <div class="p-6 flex flex-col flex-grow justify-between h-full">
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="flex items-center justify-center w-8 h-8 rounded-lg" style="background-color: rgba(168, 85, 247, 0.1); color: rgb(168, 85, 247);">
+                                                    🤖
+                                                </span>
+                                                <h3 class="text-xl font-semibold text-white">AI Intern Recommendation</h3>
+                                            </div>
+                                            <a href="https://github.com/Guhan5801/AI-based-intern-recommodation" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-500/50 flex items-center gap-1.5 group/link">
+                                                <span class="text-[10px] uppercase tracking-wider font-bold">Visit</span>
+                                                <svg class="w-4 h-4 group-hover/link:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <p class="text-slate-400 text-sm mb-4">An AI-powered resume analysis engine that parses structured information (skills, education) from uploaded PDFs using regex entity extraction and keyword matching classification.</p>
+                                        <ul class="space-y-1 mb-4">
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Extracts skills, contact info, and education</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Implements regex matching and keyword classification</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Streamlines candidate-to-intern matching workflows</li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-auto">
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Python</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">NLP</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Regex Parsing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="project-description">
-                        Erode Smart Bus Pass System is a digital platform that allows users to apply, track, renew,
-                        and manage bus passes online. The system simplifies the traditional bus pass process with a
-                        structured application workflow, status tracking, and Supabase-powered backend integration.
+
+                    <!-- Project 2 -->
+                    <div class="tilted-card-container project-card-wrapper" data-stack="Python,NLP" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner h-full transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 h-full flex flex-col overflow-hidden" style="transform: translateZ(20px);">
+                                <div class="h-1 w-full bg-gradient-to-r from-violet-500/20 via-purple-500/10 to-transparent"></div>
+                                <div class="p-6 flex flex-col flex-grow justify-between h-full">
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="flex items-center justify-center w-8 h-8 rounded-lg" style="background-color: rgba(139, 92, 246, 0.1); color: rgb(139, 92, 246);">
+                                                    🗣️
+                                                </span>
+                                                <h3 class="text-xl font-semibold text-white">Tamil Semantic Analyzer</h3>
+                                            </div>
+                                            <a href="https://github.com/Guhan5801/tamil-semantic-analyzer" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-500/50 flex items-center gap-1.5 group/link">
+                                                <span class="text-[10px] uppercase tracking-wider font-bold">Visit</span>
+                                                <svg class="w-4 h-4 group-hover/link:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <p class="text-slate-400 text-sm mb-4">A semantic sentiment analysis web application engineered specifically for the Tamil language, allowing sentiment detection, meaning mapping, and bilingual translation.</p>
+                                        <ul class="space-y-1 mb-4">
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Translates and maps complex Tamil grammar</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Generates sentiment classifications in real time</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Bridges NLP barriers for regional languages</li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-auto">
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Python</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">NLP</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Sentiment Analysis</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="tilted-card-container project-card-wrapper" data-stack="Flutter" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner h-full transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 h-full flex flex-col overflow-hidden" style="transform: translateZ(20px);">
+                                <div class="h-1 w-full bg-gradient-to-r from-emerald-500/20 via-green-500/10 to-transparent"></div>
+                                <div class="p-6 flex flex-col flex-grow justify-between h-full">
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="flex items-center justify-center w-8 h-8 rounded-lg" style="background-color: rgba(52, 211, 153, 0.1); color: rgb(52, 211, 153);">
+                                                    📱
+                                                </span>
+                                                <h3 class="text-xl font-semibold text-white">Bill-Urai</h3>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <a href="https://drive.google.com/file/d/1HcQZtKOQYv8l4HjL4sebixumfYM6ZKO3/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-amber-500/50 flex items-center gap-1" title="Play Video">
+                                                    <span class="text-[10px] uppercase font-bold">Demo</span>
+                                                </a>
+                                                <a href="https://github.com/Guhan5801/-Bill-Urai.git" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-500/50 flex items-center gap-1.5 group/link">
+                                                    <span class="text-[10px] uppercase tracking-wider font-bold">Visit</span>
+                                                    <svg class="w-4 h-4 group-hover/link:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p class="text-slate-400 text-sm mb-4">Flutter billing app with integrated barcode scanning capabilities and real-time total calculations. Designed with offline support via Hive database persistence.</p>
+                                        <ul class="space-y-1 mb-4">
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Instant barcode scanning capability</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Runs offline via Hive key-value cache</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Real-time billing computation engine</li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-auto">
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Flutter</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Dart</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Hive DB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="tilted-card-container project-card-wrapper" data-stack="UI/UX" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner h-full transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 h-full flex flex-col overflow-hidden" style="transform: translateZ(20px);">
+                                <div class="h-1 w-full bg-gradient-to-r from-teal-500/20 via-cyan-500/10 to-transparent"></div>
+                                <div class="p-6 flex flex-col flex-grow justify-between h-full">
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="flex items-center justify-center w-8 h-8 rounded-lg" style="background-color: rgba(20, 184, 166, 0.1); color: rgb(20, 184, 166);">
+                                                    🎟️
+                                                </span>
+                                                <h3 class="text-xl font-semibold text-white">Ticket Booking UI</h3>
+                                            </div>
+                                            <a href="https://github.com/Guhan5801/Ticket-Booking-UI" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-500/50 flex items-center gap-1.5 group/link">
+                                                <span class="text-[10px] uppercase tracking-wider font-bold">Visit</span>
+                                                <svg class="w-4 h-4 group-hover/link:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <p class="text-slate-400 text-sm mb-4">High-fidelity, responsive user interface design for bus and travel ticket booking, featuring interactive seat mapping, selection algorithms, and sleek transitions.</p>
+                                        <ul class="space-y-1 mb-4">
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Interactive grid seat matrix selection</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Fluid UI micro-interactions</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Fully responsive cross-device layouts</li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-auto">
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">UI/UX</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Figma</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Prototype</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="tilted-card-container project-card-wrapper" data-stack="Python" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner h-full transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 h-full flex flex-col overflow-hidden" style="transform: translateZ(20px);">
+                                <div class="h-1 w-full bg-gradient-to-r from-amber-500/20 via-orange-500/10 to-transparent"></div>
+                                <div class="p-6 flex flex-col flex-grow justify-between h-full">
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="flex items-center justify-center w-8 h-8 rounded-lg" style="background-color: rgba(245, 158, 11, 0.1); color: rgb(245, 158, 11);">
+                                                    📈
+                                                </span>
+                                                <h3 class="text-xl font-semibold text-white">Intelligent Trading System</h3>
+                                            </div>
+                                            <a href="https://github.com/Guhan5801/Intelligent-Trading-System.git" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-500/50 flex items-center gap-1.5 group/link">
+                                                <span class="text-[10px] uppercase tracking-wider font-bold">Visit</span>
+                                                <svg class="w-4 h-4 group-hover/link:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-500 border border-amber-500/30 rounded-full animate-pulse">In Progress</span>
+                                        </div>
+                                        <p class="text-slate-400 text-sm mb-4">An algorithmic trading research dashboard combining machine learning prediction models, broker API integrations, risk metrics analysis, and FastAPI server architecture.</p>
+                                        <ul class="space-y-1 mb-4">
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> ML-based trade signal generation</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> High performance FastAPI REST endpoint</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Risk-adjusted position sizing algorithm</li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-auto">
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Python</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">FastAPI</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Machine Learning</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="tilted-card-container project-card-wrapper" data-stack="UI/UX" style="perspective: 1000px; transform-style: preserve-3d;">
+                        <div class="tilted-card-inner h-full transition-transform duration-500 ease-out" style="transform-style: preserve-3d;">
+                            <div class="rounded-xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/5 h-full flex flex-col overflow-hidden" style="transform: translateZ(20px);">
+                                <div class="h-1 w-full bg-gradient-to-r from-sky-500/20 via-blue-500/10 to-transparent"></div>
+                                <div class="p-6 flex flex-col flex-grow justify-between h-full">
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="flex items-center gap-2.5">
+                                                <span class="flex items-center justify-center w-8 h-8 rounded-lg" style="background-color: rgba(56, 189, 248, 0.1); color: rgb(56, 189, 248);">
+                                                    🚌
+                                                </span>
+                                                <h3 class="text-xl font-semibold text-white">Smart Bus Pass System</h3>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <a href="https://drive.google.com/file/d/17JSMgXkXU9ZruLFksvCT5Zc11XZTVS-P/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-amber-500/50 flex items-center gap-1" title="Play Video">
+                                                    <span class="text-[10px] uppercase font-bold">Demo</span>
+                                                </a>
+                                                <a href="https://github.com/Guhan5801/Smart-Bus-Pass-System.git" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 transition-all p-2 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-cyan-500/50 flex items-center gap-1.5 group/link">
+                                                    <span class="text-[10px] uppercase tracking-wider font-bold">Visit</span>
+                                                    <svg class="w-4 h-4 group-hover/link:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p class="text-slate-400 text-sm mb-4">Online bus pass issuance platform for Erode district, simplifying registrations, renewals, and pass verification processes through relational Supabase database integration.</p>
+                                        <ul class="space-y-1 mb-4">
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Supabase Auth and database tables</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Online pass renewal and approval workflows</li>
+                                            <li class="text-slate-500 text-sm flex gap-2"><span class="text-cyan-500 shrink-0">•</span> Secure client-side credentials protection</li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mt-auto">
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">HTML/CSS/JS</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Supabase</span>
+                                        <span class="px-2 py-0.5 text-xs bg-cyan-500/20 text-cyan-400 rounded">Auth</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="py-24 px-6 bg-slate-950 relative">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                    <span class="text-cyan-400">Certifications</span>
+                </h2>
+                <p class="text-slate-400 mb-12">Industry-recognized credentials in machine learning and interface design.</p>
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Cert 1 -->
+                    <div class="group rounded-xl border overflow-hidden transition-all duration-300 bg-slate-900/50 border-slate-800 hover:border-blue-500/40 hover:shadow-lg hover:shadow-blue-500/10">
+                        <div class="flex items-start gap-4 p-5">
+                            <div class="shrink-0 w-12 h-12 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl transition-all duration-300 group-hover:scale-110">
+                                🎓
+                            </div>
+                            <div>
+                                <p class="text-slate-200 font-medium leading-snug group-hover:text-white transition-colors">Machine Learning Specialization</p>
+                                <p class="text-slate-500 text-sm mt-1">Coursera / Stanford</p>
+                                <p class="text-slate-400 text-xs mt-2 leading-relaxed">Comprehensive study of supervised and unsupervised machine learning methods, regularization, optimization, neural networks, and decision tree classifiers.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cert 2 -->
+                    <div class="group rounded-xl border overflow-hidden transition-all duration-300 bg-slate-900/50 border-slate-800 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/10">
+                        <div class="flex items-start gap-4 p-5">
+                            <div class="shrink-0 w-12 h-12 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl transition-all duration-300 group-hover:scale-110">
+                                🧠
+                            </div>
+                            <div>
+                                <p class="text-slate-200 font-medium leading-snug group-hover:text-white transition-colors">Generative AI Applications</p>
+                                <p class="text-slate-500 text-sm mt-1">GrowAITech</p>
+                                <p class="text-slate-400 text-xs mt-2 leading-relaxed">Advanced practical implementation of generative models, LLM system architecture, chaining tools, memory paradigms, and prompt engineering safety.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cert 3 -->
+                    <div class="group rounded-xl border overflow-hidden transition-all duration-300 bg-slate-900/50 border-slate-800 hover:border-rose-500/40 hover:shadow-lg hover:shadow-rose-500/10">
+                        <div class="flex items-start gap-4 p-5">
+                            <div class="shrink-0 w-12 h-12 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center text-xl transition-all duration-300 group-hover:scale-110">
+                                🎨
+                            </div>
+                            <div>
+                                <p class="text-slate-200 font-medium leading-snug group-hover:text-white transition-colors">Interface Design</p>
+                                <p class="text-slate-500 text-sm mt-1">Figma Essentials</p>
+                                <p class="text-slate-400 text-xs mt-2 leading-relaxed">Focuses on modern design systems, grid layouts, typographic scales, fluid prototyping, user personas matching, and developer handoffs.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="pt-12 pb-24 px-6 bg-transparent relative overflow-hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-8">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">Get in <span class="text-cyan-400">Touch</span></h2>
+                    <p class="text-lg text-slate-400 max-w-4xl leading-relaxed">
+                        Let's build something remarkable together! I'm passionate about NLP optimization, prompt architectures, and regional translation platforms. Whether you want to brainstorm, collaborate, or just talk AI, drop me a line!
                     </p>
-                    <div class="tech-stack">
-                        <span class="tech-badge">HTML</span>
-                        <span class="tech-badge">CSS</span>
-                        <span class="tech-badge">JavaScript</span>
-                        <span class="tech-badge">Supabase</span>
-                        <span class="tech-badge">Responsive UI</span>
-                        <span class="tech-badge">Authentication</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Guhan5801/Smart-Bus-Pass-System.git" target="_blank" class="project-btn"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="https://drive.google.com/file/d/17JSMgXkXU9ZruLFksvCT5Zc11XZTVS-P/view?usp=drive_link" target="_blank" class="project-btn demo-btn"><i class="fas fa-video"></i> Demo Video</a>
-                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <div class="grid lg:grid-cols-2 gap-6 items-stretch">
+                    
+                    <!-- Connect details -->
+                    <div>
+                        <div class="p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 h-full flex flex-col justify-between shadow-lg shadow-black/5">
+                            <h3 class="text-sm font-mono text-cyan-400 uppercase tracking-widest mb-6">Connect</h3>
+                            <div class="flex flex-col gap-4 flex-grow justify-between">
+                                <button id="copy-email-btn" class="group flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-cyan-500/50 hover:bg-slate-800 transition-all duration-300 w-full text-left relative">
+                                    <div class="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-900 transition-colors">
+                                        ✉️
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-xs text-slate-500 font-medium">Email Me At</p>
+                                        <p class="text-white font-semibold text-sm md:text-base break-all">guhanchinnasamy5801@gmail.com</p>
+                                    </div>
+                                    <div id="email-copied-toast" class="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-cyan-500 text-slate-900 text-xs font-bold shadow-lg hidden">Email copied!</div>
+                                </button>
+                                
+                                <div class="flex gap-4">
+                                    <a href="https://www.linkedin.com/in/guhan-c-" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-cyan-500/50 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 transition-all duration-300">
+                                        LinkedIn
+                                    </a>
+                                    <a href="https://github.com/Guhan5801" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-cyan-500/50 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 transition-all duration-300">
+                                        GitHub
+                                    </a>
+                                </div>
 
-    <!-- Education Section -->
-    <section id="education" class="education-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Academic Journey</h2>
-                <div class="title-underline"></div>
-            </div>
-            <div class="education-content">
-                <div class="education-card glass-card">
-                    <div class="edu-header">
-                        <div class="edu-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <div class="edu-info">
-                            <h3>Bachelor of Engineering - Computer Science</h3>
-                            <p class="institution">Velalar College of Engineering and Technology</p>
-                            <p class="duration">Pursuing</p>
+                                <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+                                    <div class="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                                        📞
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-500 font-medium">Call Me At</p>
+                                        <p class="text-white font-semibold text-sm md:text-base">+91 9488028989</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="coursework">
-                        <h4>Relevant Coursework</h4>
-                        <div class="course-tags">
-                            <span class="course-tag">Data Structures & Algorithms</span>
-                            <span class="course-tag">Database Management Systems</span>
-                            <span class="course-tag">Computer Networks</span>
-                            <span class="course-tag">Operating Systems</span>
-                            <span class="course-tag">Web Technologies</span>
-                            <span class="course-tag">Software Engineering</span>
-                            <span class="course-tag">Object-Oriented Programming</span>
-                            <span class="course-tag">Cloud Computing</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="certifications">
-                    <h3 class="cert-title">My Certifications</h3>
-                    <p class="cert-subtitle">Credentials earned on my continuous learning journey</p>
-                    <div class="cert-grid">
-                        <div class="cert-card glass-card">
-                            <div class="cert-icon"><i class="fas fa-certificate"></i></div>
-                            <h4>Machine Learning Specialization</h4>
-                            <p class="cert-provider">Coursera</p>
-                            <p class="cert-desc">Comprehensive ML fundamentals and applications</p>
-                        </div>
-                        <div class="cert-card glass-card">
-                            <div class="cert-icon"><i class="fas fa-certificate"></i></div>
-                            <h4>Generative AI Applications</h4>
-                            <p class="cert-provider">GrowAITech</p>
-                            <p class="cert-desc">Advanced generative AI and practical implementations</p>
-                        </div>
-                        <div class="cert-card glass-card">
-                            <div class="cert-icon"><i class="fas fa-certificate"></i></div>
-                            <h4>Interface Design</h4>
-                            <p class="cert-provider">Figma Essentials</p>
-                            <p class="cert-desc">User interface and experience design principles</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Resume Section -->
-    <section id="resume" class="resume-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Resume</h2>
-                <p class="section-subtitle">Download my complete resume for detailed information</p>
-                <div class="title-underline"></div>
-            </div>
-            <div class="resume-content">
-                <div class="resume-preview glass-card">
-                    <div class="resume-icon">
-                        <i class="fas fa-file-pdf"></i>
-                    </div>
-                    <h3>Guhan Chinnasamy</h3>
-                    <p class="resume-title">Prompt Engineering Specialist</p>
-                    <p class="resume-description">
-                        Get a comprehensive overview of my skills, experience, education, and projects. 
-                        Download my resume to learn more about my professional journey.
-                    </p>
-                    <div class="resume-buttons">
-                        <a href="Guhan_Resume_22CSR038.pdf" download class="btn btn-primary">
-                            <i class="fas fa-download"></i> Download PDF
-                        </a>
-                        <a href="Guhan_Resume_22CSR038.pdf" target="_blank" class="btn btn-secondary">
-                            <i class="fas fa-eye"></i> View Resume
-                        </a>
-                    </div>
-                    <div class="resume-highlights">
-                        <div class="highlight-item">
-                            <i class="fas fa-briefcase"></i>
-                            <span>Professional Experience</span>
-                        </div>
-                        <div class="highlight-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span>Education & Certifications</span>
-                        </div>
-                        <div class="highlight-item">
-                            <i class="fas fa-project-diagram"></i>
-                            <span>Featured Projects</span>
-                        </div>
-                        <div class="highlight-item">
-                            <i class="fas fa-code"></i>
-                            <span>Technical Skills</span>
+                    <!-- Send Message form -->
+                    <div>
+                        <div class="p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 h-full flex flex-col shadow-lg shadow-black/5">
+                            <h3 class="text-sm font-mono text-cyan-400 uppercase tracking-widest mb-6">Send a Message</h3>
+                            
+                            <form class="contact-form flex-grow flex flex-col justify-between" action="/api/send" method="POST" id="main-contact-form">
+                                <input type="hidden" name="_subject" value="New Portfolio Contact Message">
+                                <input type="hidden" name="_captcha" value="false">
+                                <input type="hidden" name="_template" value="table">
+                                
+                                <div class="space-y-4 mb-6">
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div class="space-y-2">
+                                            <label for="name" class="text-sm font-medium text-slate-400 ml-1">Name</label>
+                                            <input id="name" type="text" name="name" placeholder="John Doe" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900/50 border border-white/10 text-white text-base placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition-all">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label for="email" class="text-sm font-medium text-slate-400 ml-1">Email</label>
+                                            <input id="email" type="email" name="email" placeholder="john@example.com" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900/50 border border-white/10 text-white text-base placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition-all">
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label for="subject" class="text-sm font-medium text-slate-400 ml-1">Subject</label>
+                                        <input id="subject" type="text" name="subject" placeholder="Let's collaborate!" class="w-full px-4 py-2.5 rounded-xl bg-slate-900/50 border border-white/10 text-white text-base placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition-all">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label for="message" class="text-sm font-medium text-slate-400 ml-1">Message</label>
+                                        <textarea id="message" name="message" placeholder="Tell me about your ideas..." rows="3" required class="w-full px-4 py-2.5 rounded-xl bg-slate-900/50 border border-white/10 text-white text-base placeholder-slate-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none transition-all resize-none"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="w-full group relative flex items-center justify-center gap-2 px-6 py-3.5 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-slate-900 font-bold rounded-xl transition-all duration-300 overflow-hidden shadow-lg shadow-cyan-500/20 text-base" id="submit-form-btn">
+                                    <span class="relative z-10 flex items-center gap-2">
+                                        Send Message <span>→</span>
+                                    </span>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">Ready to launch your next project? I'm always open to exploring new opportunities</p>
-                <div class="title-underline"></div>
-            </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-card glass-card">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <h4>Email</h4>
-                        <p>Send me a message</p>
-                        <a href="mailto:guhanchinnasamy5801@gmail.com">guhanchinnasamy5801@gmail.com</a>
-                    </div>
-                    <div class="contact-card glass-card">
-                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <h4>Phone</h4>
-                        <p>Available for calls</p>
-                        <a href="tel:+919488028989">+91 9488028989</a>
-                    </div>
-                    <div class="contact-card glass-card">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <h4>Location</h4>
-                        <p>Kangayam,Tiruppur District(638701),Tamil Nadu</p>
-                        <span>India</span>
-                    </div>
-                </div>
-                <div class="contact-form-wrapper glass-card">
-                    <h3>Let's Connect</h3>
-                    <p>Whether you have a project in mind or just want to say hello — my communication channels are always open!</p>
-                    <form class="contact-form" action="https://formsubmit.co/guhanchinnasamy5801@gmail.com" method="POST">
-                        <input type="hidden" name="_subject" value="New Portfolio Contact Message">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <div class="form-group">
-                            <input type="text" name="name" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" name="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="subject" placeholder="Subject">
-                        </div>
-                        <div class="form-group">
-                            <textarea rows="5" name="message" placeholder="Your Message" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                    <div class="availability">
-                        <span class="status-indicator"></span>
-                        <span>Available • Response within 24 hours</span>
-                    </div>
                 </div>
             </div>
-            <div class="social-connect">
-                <h3>Connect Across The Web</h3>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/guhan-c-" target="_blank" class="social-link" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/Guhan5801" target="_blank" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="mailto:guhanchinnasamy5801@gmail.com" class="social-link" title="Email"><i class="fas fa-envelope"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="logo-name">G</span>
-                    <span class="logo-text">Guhan</span>
-                </div>
-                <p class="footer-text">© 2026 Guhan C. Crafted with ❤️ and passion.</p>
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#contact">Contact</a>
+    <footer class="py-12 px-6 bg-slate-950 border-t border-slate-900 relative z-10">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <span class="text-xl font-bold text-white"><span class="text-cyan-400">G</span>uhan C</span>
+                <p class="text-slate-500 text-xs text-center md:text-left italic">"The limits of my language mean the limits of my world." — Ludwig Wittgenstein</p>
+            </div>
+            <div class="flex flex-col items-center md:items-end gap-2">
+                <p class="text-slate-500 text-xs">&copy; 2026 Guhan C. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="https://github.com/Guhan5801" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors">GitHub</a>
+                    <a href="https://www.linkedin.com/in/guhan-c-" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors">LinkedIn</a>
+                    <a href="mailto:guhanchinnasamy5801@gmail.com" class="text-slate-400 hover:text-cyan-400 transition-colors">Email</a>
                 </div>
             </div>
-            <a href="#home" class="back-to-top" id="backToTop">
-                <i class="fas fa-arrow-up"></i>
-            </a>
         </div>
     </footer>
 
-    <!-- Video Modal -->
-    <div id="demo-video" class="video-modal">
-        <div class="modal-content glass-card">
-            <span class="close-modal">&times;</span>
-            <h3>Intelligent Trading System - Demo</h3>
-            <div class="video-wrapper">
-                <!-- Google Drive video embed - Make sure video is set to "Anyone with the link" in sharing settings -->
-                <iframe width="100%" height="500" 
-                        src="https://drive.google.com/file/d/1W5E-RdvW4A3VDujCByFX2AeObNt_dYFA/preview"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
+    <!-- SELECTABLE POINTER CURSOR STYLES (Bottom-right settings floats) -->
+    <!-- Custom Cursor Canvas -->
+    <canvas id="cursor-canvas" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100000; width: 100%; height: 100%;"></canvas>
+    
+    <!-- Cursor Options Wrapper -->
+    <div id="cursor-wrapper" class="cursor-wrapper cursor-constellation">
+        <!-- fountain pen nib -->
+        <div id="cursor-pen" class="cursor-pen-nib-container hidden" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999;">
+            <div class="cursor-pen-nib">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L6 18l6-3 6 3-6-16z" fill="#22d3ee" fill-opacity="0.2"></path>
+                    <path d="M12 2L6 18l6-3 6 3-6-16z" stroke="#22d3ee" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12 15V2" stroke="#22d3ee" stroke-linecap="round"></path>
+                    <circle cx="12" cy="2" r="1.5" fill="#fff" class="nib-point"></circle>
+                </svg>
             </div>
         </div>
+        <!-- orbital -->
+        <div id="cursor-orbital" class="hidden" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999;">
+            <div class="dot" style="position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #22d3ee; transform: translate(-50%, -50%);"></div>
+            <div class="ring" style="position: absolute; width: 32px; height: 32px; border: 2px solid #22d3ee; border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.08s ease-out;"></div>
+        </div>
+        <!-- crosshair -->
+        <div id="cursor-crosshair" class="cursor-crosshair hidden" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999;">
+            <div class="dot" style="position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #22d3ee; transform: translate(-50%, -50%);"></div>
+            <div class="line line-v" style="position: absolute; width: 1px; height: 24px; background: rgba(34,211,238,0.5); transform: translate(-50%, -50%);"></div>
+            <div class="line line-h" style="position: absolute; width: 24px; height: 1px; background: rgba(34,211,238,0.5); transform: translate(-50%, -50%);"></div>
+        </div>
+    </div>
+    
+    <!-- Cursor Settings Toggle Button -->
+    <button id="cursor-toggle" class="cursor-settings-toggle" title="Change Cursor Style">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+            <path d="M2 2l7.586 7.586"></path>
+            <circle cx="11" cy="11" r="2"></circle>
+        </svg>
+    </button>
+    <div id="cursor-menu" class="cursor-menu hidden">
+        <div class="cursor-option active" data-cursor="constellation">Constellation</div>
+        <div class="cursor-option" data-cursor="pen">Fountain Pen</div>
+        <div class="cursor-option" data-cursor="particles">Particles</div>
+        <div class="cursor-option" data-cursor="crosshair">Crosshair</div>
+        <div class="cursor-option" data-cursor="orbital">Orbital</div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="script.js?v=2.1"></script>
 </body>
 </html>

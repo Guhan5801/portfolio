@@ -1,605 +1,607 @@
-// ========================================
-// STARRY NIGHT ANIMATED BACKGROUND WITH 3D
-// ========================================
+// ==========================================================================
+// INTERACTIVE HYPERSPEED STARFIELD BACKGROUND CANVAS ENGINE
+// ==========================================================================
 
-// Create twinkling stars with variety and 3D effects
-function createParticles() {
-    const particleContainer = document.getElementById('particles');
-    const particleCount = 110;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Varied sizes between 2-10px for star variety
-        const size = Math.random() * 8 + 2;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Random horizontal position
-        particle.style.left = `${Math.random() * 100}%`;
-        
-        // Slightly slower and softer movement
-        const duration = Math.random() * 35 + 8;
-        particle.style.animationDuration = `${duration}s, ${Math.random() * 3 + 3}s`;
-        
-        // Random delay for staggered twinkling effect
-        particle.style.animationDelay = `${Math.random() * 25}s, ${Math.random() * 3}s`;
-        
-        particleContainer.appendChild(particle);
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+let bgWidth = (bgCanvas.width = window.innerWidth);
+let bgHeight = (bgCanvas.height = window.innerHeight);
+
+class Star {
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.x = (Math.random() - 0.5) * bgWidth;
+        this.y = (Math.random() - 0.5) * bgHeight;
+        this.z = Math.random() * bgWidth;
+        this.pz = 0;
+    }
+    update(speed) {
+        this.pz = this.z;
+        this.z -= speed;
+        if (this.z < 1) {
+            this.z = bgWidth;
+            this.pz = 0;
+            this.x = (Math.random() - 0.5) * bgWidth;
+            this.y = (Math.random() - 0.5) * bgHeight;
+        }
+    }
+    draw() {
+        const cx = bgWidth / 2;
+        const cy = bgHeight / 2;
+        const sx = this.x / (this.z / bgWidth);
+        const sy = this.y / (this.z / bgWidth);
+
+        if (this.pz !== 0) {
+            const px = cx + sx;
+            const py = cy + sy;
+            const qx = cx + this.x / (this.pz / bgWidth);
+            const qy = cy + this.y / (this.pz / bgWidth);
+
+            if (px >= 0 && px <= bgWidth && py >= 0 && py <= bgHeight) {
+                bgCtx.beginPath();
+                bgCtx.moveTo(qx, qy);
+                bgCtx.lineTo(px, py);
+                bgCtx.stroke();
+            }
+        }
     }
 }
 
-// Enhanced Mouse follower effect with blue glow
-const mouseFollower = document.getElementById('mouseFollower');
-let mouseX = 0;
-let mouseY = 0;
-let followerX = 0;
-let followerY = 0;
-let isMouseMoving = false;
-let mouseTimeout;
+let stars = [];
+const starCount = 350;
+let speed = 0.5;
+let targetSpeed = 0.5;
 
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    mouseFollower.style.opacity = '1';
-    
-    isMouseMoving = true;
-    clearTimeout(mouseTimeout);
-    
-    // Hide follower after 2 seconds of no movement
-    mouseTimeout = setTimeout(() => {
-        isMouseMoving = false;
-        mouseFollower.style.opacity = '0';
-    }, 2000);
-});
-
-// Smooth follow animation with easing
-function animateFollower() {
-    const dx = mouseX - followerX;
-    const dy = mouseY - followerY;
-    
-    followerX += dx * 0.09;
-    followerY += dy * 0.09;
-    
-    mouseFollower.style.left = `${followerX}px`;
-    mouseFollower.style.top = `${followerY}px`;
-    
-    requestAnimationFrame(animateFollower);
-}
-
-// 3D Ripple effect with glittering particles on button click
-function create3DRipple(event) {
-    const button = event.currentTarget;
-    const rect = button.getBoundingClientRect();
-    
-    // Create main ripple
-    const ripple = document.createElement('span');
-    const size = Math.max(rect.width, rect.height) * 2;
-    const x = event.clientX - rect.left - size / 2;
-    const y = event.clientY - rect.top - size / 2;
-    
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
-    ripple.classList.add('ripple-effect-3d');
-    
-    button.appendChild(ripple);
-    
-    // Create glittering explosion particles
-    for (let i = 0; i < 10; i++) {
-        const particle = document.createElement('span');
-        particle.classList.add('click-particle');
-        particle.style.left = (event.clientX - rect.left) + 'px';
-        particle.style.top = (event.clientY - rect.top) + 'px';
-        
-        const angle = (Math.PI * 2 * i) / 10;
-        const velocity = 40 + Math.random() * 40;
-        particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
-        particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
-        
-        button.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 1200);
+function initStars() {
+    stars = [];
+    for (let i = 0; i < starCount; i++) {
+        stars.push(new Star());
     }
-    
-    setTimeout(() => ripple.remove(), 800);
-    
-    // Add shake effect
-    button.style.animation = 'buttonShake 0.2s ease';
-    setTimeout(() => {
-        button.style.animation = '';
-    }, 300);
 }
 
-// Add magnetic and 3D effect to buttons
-function addMagnetic3DEffect() {
-    const buttons = document.querySelectorAll('.btn');
-    
-    buttons.forEach(button => {
-        button.addEventListener('mouseenter', (e) => {
-            button.style.transition = 'transform 0.2s ease';
-        });
-        
-        button.addEventListener('mousemove', (e) => {
-            const rect = button.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            const rotateX = (y / rect.height) * 10;
-            const rotateY = -(x / rect.width) * 10;
-            
-            button.style.transform = `
-                translate(${x * 0.08}px, ${y * 0.08}px) 
-                rotateX(${rotateX}deg) 
-                rotateY(${rotateY}deg) 
-                scale(1.02)
-                translateZ(10px)
-            `;
-        });
-        
-        button.addEventListener('mouseleave', () => {
-            button.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-            button.style.transform = 'translate(0, 0) rotateX(0) rotateY(0) scale(1) translateZ(0)';
-        });
-        
-        // Add 3D click ripple effect
-        button.addEventListener('click', create3DRipple);
+window.addEventListener('resize', () => {
+    bgWidth = (bgCanvas.width = window.innerWidth);
+    bgHeight = (bgCanvas.height = window.innerHeight);
+    initStars();
+});
+
+initStars();
+
+function animateStars() {
+    bgCtx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+    bgCtx.fillRect(0, 0, bgWidth, bgHeight);
+
+    bgCtx.strokeStyle = 'rgba(34, 211, 238, 0.35)';
+    bgCtx.lineWidth = 1;
+
+    speed += (targetSpeed - speed) * 0.05;
+    targetSpeed += (0.5 - targetSpeed) * 0.03;
+
+    stars.forEach(star => {
+        star.update(speed * 8);
+        star.draw();
     });
+
+    requestAnimationFrame(animateStars);
 }
+animateStars();
 
-// Initialize animations
-document.addEventListener('DOMContentLoaded', () => {
-    createParticles();
-    animateFollower();
-    addMagnetic3DEffect();
-    
-    // Add CSS for 3D effects dynamically - BLUE THEME
-    const style = document.createElement('style');
-    style.textContent = `
-        .ripple-effect-3d {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, rgba(34, 211, 238, 0.5) 50%, transparent 100%);
-            animation: ripple3d-animation 0.8s ease-out;
-            pointer-events: none;
-            transform-style: preserve-3d;
-        }
-        
-        @keyframes ripple3d-animation {
-            0% {
-                transform: scale(0) translateZ(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.5) translateZ(50px);
-                opacity: 0;
-            }
-        }
-        
-        .click-particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #22d3ee, #3b82f6);
-            pointer-events: none;
-            animation: particle-explode 1.2s ease-out forwards, twinkle-particle 0.3s ease-in-out infinite;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.9), 0 0 30px rgba(34, 211, 238, 0.6);
-        }
-        
-        @keyframes particle-explode {
-            0% {
-                transform: translate(0, 0) scale(1) translateZ(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty)) scale(0) translateZ(40px);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes twinkle-particle {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(2); }
-        }
-        
-        @keyframes buttonShake {
-            0%, 100% { transform: translateX(0) rotateZ(0deg); }
-            25% { transform: translateX(-5px) rotateZ(-2deg); }
-            75% { transform: translateX(5px) rotateZ(2deg); }
-        }
-        
-        /* 3D perspective for body */
-        body {
-            perspective: 1000px;
-            transform-style: preserve-3d;
-        }
-    `;
-    document.head.appendChild(style);
+function triggerWarp() {
+    targetSpeed = 4.5;
+}
+window.addEventListener('scroll', triggerWarp, { passive: true });
+window.addEventListener('mousedown', triggerWarp);
+window.addEventListener('touchstart', triggerWarp, { passive: true });
+
+
+// ==========================================================================
+// SELECTABLE MULTI-CURSOR CUSTOM POINTER ENGINE
+// ==========================================================================
+
+const cursorCanvas = document.getElementById('cursor-canvas');
+const cursorCtx = cursorCanvas.getContext('2d');
+let cursorWidth = (cursorCanvas.width = window.innerWidth);
+let cursorHeight = (cursorCanvas.height = window.innerHeight);
+
+window.addEventListener('resize', () => {
+    cursorWidth = (cursorCanvas.width = window.innerWidth);
+    cursorHeight = (cursorCanvas.height = window.innerHeight);
 });
 
-// Mobile Menu Toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
-const navLinks = document.querySelectorAll('.nav-link');
+let cursorStyle = localStorage.getItem('cursor-style') || 'constellation';
+const mouse = { x: 0, y: 0, px: 0, py: 0, active: false };
 
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-    hamburger.classList.toggle('active');
-});
+const penEl = document.getElementById('cursor-pen');
+const orbitalEl = document.getElementById('cursor-orbital');
+const crosshairEl = document.getElementById('cursor-crosshair');
 
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    });
-});
+let orbitalRing = { x: 0, y: 0 };
+let constellationPoints = [];
+let particles = [];
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (!href || href === '#') return;
+window.addEventListener('mousemove', (e) => {
+    mouse.px = mouse.x;
+    mouse.py = mouse.y;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
 
-        const target = document.querySelector(href);
-        if (target) {
-            e.preventDefault();
-            const navbarHeight = navbar ? navbar.offsetHeight : 0;
-            const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-            window.scrollTo({
-                top: targetTop,
-                behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    updateCursorDOM();
+
+    if (cursorStyle === 'constellation') {
+        const distMoved = Math.hypot(mouse.x - mouse.px, mouse.y - mouse.py);
+        if (distMoved > 2 && Math.random() < 0.5) {
+            constellationPoints.push({
+                x: mouse.x,
+                y: mouse.y,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                life: 1.0,
+                decay: 0.015 + Math.random() * 0.01
             });
         }
-    });
+    }
+
+    if (cursorStyle === 'particles') {
+        const distMoved = Math.hypot(mouse.x - mouse.px, mouse.y - mouse.py);
+        if (distMoved > 1) {
+            particles.push({
+                x: mouse.x,
+                y: mouse.y,
+                vx: (Math.random() - 0.5) * 2.5,
+                vy: (Math.random() - 0.5) * 2.5 - 0.8,
+                size: Math.random() * 3.5 + 1.2,
+                life: 1.0,
+                decay: 0.02 + Math.random() * 0.015
+            });
+        }
+    }
 });
 
-// Typing effect for home section
-const typingText = document.querySelector('.typing-text');
-const phrases = [
-    'Prompt Engineer'
-];
+window.addEventListener('mouseleave', () => {
+    mouse.active = false;
+    hideAllCursors();
+});
 
-let phraseIndex = 0;
-let charIndex = 0;
+window.addEventListener('mouseenter', () => {
+    mouse.active = true;
+    showActiveCursor();
+});
+
+function updateCursorDOM() {
+    if (!mouse.active) return;
+    if (cursorStyle === 'pen' && penEl) {
+        penEl.style.left = `${mouse.x}px`;
+        penEl.style.top = `${mouse.y}px`;
+    }
+    if (cursorStyle === 'crosshair' && crosshairEl) {
+        crosshairEl.style.left = `${mouse.x}px`;
+        crosshairEl.style.top = `${mouse.y}px`;
+    }
+}
+
+function hideAllCursors() {
+    if (penEl) penEl.classList.add('hidden');
+    if (orbitalEl) orbitalEl.classList.add('hidden');
+    if (crosshairEl) crosshairEl.classList.add('hidden');
+    cursorCanvas.classList.add('hidden');
+}
+
+function showActiveCursor() {
+    hideAllCursors();
+    if (cursorStyle === 'pen' && penEl) penEl.classList.remove('hidden');
+    if (cursorStyle === 'orbital' && orbitalEl) orbitalEl.classList.remove('hidden');
+    if (cursorStyle === 'crosshair' && crosshairEl) crosshairEl.classList.remove('hidden');
+    if (cursorStyle === 'constellation' || cursorStyle === 'particles') {
+        cursorCanvas.classList.remove('hidden');
+    }
+}
+
+function animateCursor() {
+    cursorCtx.clearRect(0, 0, cursorWidth, cursorHeight);
+
+    if (cursorStyle === 'constellation' && constellationPoints.length > 0) {
+        constellationPoints.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= p.decay;
+        });
+        constellationPoints = constellationPoints.filter(p => p.life > 0);
+
+        for (let i = 0; i < constellationPoints.length; i++) {
+            for (let j = i + 1; j < constellationPoints.length; j++) {
+                const p1 = constellationPoints[i];
+                const p2 = constellationPoints[j];
+                const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                if (d < 110) {
+                    const alpha = (1 - d / 110) * 0.22 * Math.min(p1.life, p2.life);
+                    cursorCtx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+                    cursorCtx.lineWidth = 0.8;
+                    cursorCtx.beginPath();
+                    cursorCtx.moveTo(p1.x, p1.y);
+                    cursorCtx.lineTo(p2.x, p2.y);
+                    cursorCtx.stroke();
+                }
+            }
+        }
+
+        constellationPoints.forEach(p => {
+            cursorCtx.fillStyle = `rgba(34, 211, 238, ${p.life * 0.65})`;
+            cursorCtx.beginPath();
+            cursorCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            cursorCtx.fill();
+        });
+    }
+
+    if (cursorStyle === 'particles' && particles.length > 0) {
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= p.decay;
+        });
+        particles = particles.filter(p => p.life > 0);
+
+        particles.forEach(p => {
+            cursorCtx.fillStyle = `rgba(34, 211, 238, ${p.life * 0.75})`;
+            cursorCtx.beginPath();
+            cursorCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            cursorCtx.fill();
+        });
+    }
+
+    if (cursorStyle === 'orbital' && orbitalEl && mouse.active) {
+        const ring = orbitalEl.querySelector('.ring');
+        const dot = orbitalEl.querySelector('.dot');
+        
+        if (dot) {
+            dot.style.left = `${mouse.x}px`;
+            dot.style.top = `${mouse.y}px`;
+        }
+
+        orbitalRing.x += (mouse.x - orbitalRing.x) * 0.15;
+        orbitalRing.y += (mouse.y - orbitalRing.y) * 0.15;
+
+        if (ring) {
+            ring.style.left = `${orbitalRing.x}px`;
+            ring.style.top = `${orbitalRing.y}px`;
+        }
+    }
+
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// Cursor Menu Toggling
+const cursorToggle = document.getElementById('cursor-toggle');
+const cursorMenu = document.getElementById('cursor-menu');
+const cursorOptions = document.querySelectorAll('.cursor-option');
+
+if (cursorToggle && cursorMenu) {
+    cursorToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cursorMenu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!cursorMenu.contains(e.target) && e.target !== cursorToggle) {
+            cursorMenu.classList.add('hidden');
+        }
+    });
+
+    cursorOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+            cursorOptions.forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+
+            cursorStyle = opt.getAttribute('data-cursor');
+            localStorage.setItem('cursor-style', cursorStyle);
+
+            showActiveCursor();
+            cursorMenu.classList.add('hidden');
+        });
+    });
+}
+showActiveCursor();
+
+
+// ==========================================================================
+// SCROLL PROGRESS BAR
+// ==========================================================================
+
+const scrollBar = document.getElementById('scroll-progress-bar');
+window.addEventListener('scroll', () => {
+    if (!scrollBar) return;
+    const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    scrollBar.style.width = `${scrolled}%`;
+});
+
+
+// ==========================================================================
+// HERO TYPEWRITER TYPING ANIMATION
+// ==========================================================================
+
+const typewriterText = document.getElementById('typewriter-text');
+const roles = ['AI Fullstack Developer', 'Prompt Engineer & AI Specialist', 'Fullstack Engineer'];
+let roleIdx = 0;
+let charIdx = 0;
 let isDeleting = false;
 let typingSpeed = 100;
 
 function type() {
-    const currentPhrase = phrases[phraseIndex];
-    
+    const currentRole = roles[roleIdx];
     if (isDeleting) {
-        typingText.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
+        typewriterText.textContent = currentRole.substring(0, charIdx - 1);
+        charIdx--;
         typingSpeed = 50;
     } else {
-        typingText.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
+        typewriterText.textContent = currentRole.substring(0, charIdx + 1);
+        charIdx++;
         typingSpeed = 100;
     }
-    
-    if (!isDeleting && charIndex === currentPhrase.length) {
+
+    if (!isDeleting && charIdx === currentRole.length) {
         isDeleting = true;
-        typingSpeed = 2000; // Pause at end
-    } else if (isDeleting && charIndex === 0) {
+        typingSpeed = 2200;
+    } else if (isDeleting && charIdx === 0) {
         isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        typingSpeed = 500; // Pause before next phrase
+        roleIdx = (roleIdx + 1) % roles.length;
+        typingSpeed = 500;
     }
-    
+
     setTimeout(type, typingSpeed);
 }
-
-// Start typing effect
-setTimeout(type, 1000);
-
-// Active navigation link on scroll
-const sections = document.querySelectorAll('section[id]');
-
-function scrollActive() {
-    const scrollY = window.pageYOffset;
-    let activeSectionId = null;
-
-    sections.forEach(current => {
-        const sectionHeight = current.offsetHeight;
-        const sectionTop = current.offsetTop - 100;
-        const sectionId = current.getAttribute('id');
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-            activeSectionId = sectionId;
-        }
-    });
-
-    navLinks.forEach(link => link.classList.remove('active'));
-    if (activeSectionId) {
-        const activeNavLink = document.querySelector(`.nav-link[href="#${activeSectionId}"]`);
-        if (activeNavLink) activeNavLink.classList.add('active');
-    }
+if (typewriterText) {
+    setTimeout(type, 1000);
 }
 
-// Back to top button
-const backToTop = document.getElementById('backToTop');
 
-// Animate elements on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
+// ==========================================================================
+// TECH STACK MARQUEE DYNAMIC RENDER & CATEGORY FILTERING
+// ==========================================================================
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
+const techBadges = [
+    { name: "Python", cat: "language", icon: "🐍" },
+    { name: "C", cat: "language", icon: "💻" },
+    { name: "JavaScript", cat: "language", icon: "🟨" },
+    { name: "Dart", cat: "language", icon: "🎯" },
+    { name: "SQL", cat: "language", icon: "🗄️" },
+    { name: "FastAPI", cat: "backend", icon: "⚡" },
+    { name: "NLP", cat: "ai", icon: "🗣️" },
+    { name: "Regex Parsing", cat: "ai", icon: "🔍" },
+    { name: "AI Optimization", cat: "ai", icon: "⚙️" },
+    { name: "Prompt Design", cat: "ai", icon: "✍️" },
+    { name: "System Prompts", cat: "ai", icon: "🧠" },
+    { name: "Context Optimization", cat: "ai", icon: "📊" },
+    { name: "HTML5 / CSS3", cat: "frontend", icon: "🎨" },
+    { name: "Figma Essentials", cat: "frontend", icon: "📐" },
+    { name: "Supabase", cat: "database", icon: "⚡" },
+    { name: "Hive DB", cat: "database", icon: "📦" },
+    { name: "PostgreSQL", cat: "database", icon: "🐘" },
+    { name: "SQLite", cat: "database", icon: "💾" },
+    { name: "Git & GitHub", cat: "cloud", icon: "🐙" },
+    { name: "VS Code", cat: "cloud", icon: "📝" }
+];
+
+const mid = Math.ceil(techBadges.length / 2);
+const row1Items = techBadges.slice(0, mid);
+const row2Items = techBadges.slice(mid);
+
+function renderMarqueeRow(container, items) {
+    if (!container) return;
+    container.innerHTML = '';
+    const tripled = [...items, ...items, ...items];
+    tripled.forEach((item, index) => {
+        const el = document.createElement('div');
+        el.className = 'marquee-item';
+        el.setAttribute('data-cat', item.cat);
+        el.style.transitionDelay = `${(index % items.length) * 30}ms`;
+        el.innerHTML = `
+            <div class="flex items-center gap-2">
+                <span class="icon-wrapper">${item.icon}</span>
+                <span class="tech-name">${item.name}</span>
+            </div>
+            <div class="glow-effect"></div>
+        `;
+        container.appendChild(el);
     });
-}, observerOptions);
+}
 
-// Observe all glass cards
-document.querySelectorAll('.glass-card').forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(card);
+const row1Container = document.getElementById('marquee-row-1');
+const row2Container = document.getElementById('marquee-row-2');
+if (row1Container && row2Container) {
+    renderMarqueeRow(row1Container, row1Items);
+    renderMarqueeRow(row2Container, row2Items);
+}
+
+const filterPills = document.querySelectorAll('#marquee-filters .filter-pill');
+filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('filter-pill-active'));
+        pill.classList.add('filter-pill-active');
+        const cat = pill.getAttribute('data-cat');
+
+        const marqueeItems = document.querySelectorAll('.marquee-item');
+        marqueeItems.forEach(item => {
+            const itemCat = item.getAttribute('data-cat');
+            if (cat === 'all') {
+                item.classList.remove('marquee-dimmed', 'marquee-highlighted');
+            } else if (itemCat === cat) {
+                item.classList.add('marquee-highlighted');
+                item.classList.remove('marquee-dimmed');
+            } else {
+                item.classList.add('marquee-dimmed');
+                item.classList.remove('marquee-highlighted');
+            }
+        });
+    });
 });
 
-// Progress bar animation
-const progressObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const progressBar = entry.target.querySelector('.progress-fill');
-            if (progressBar) {
-                const width = progressBar.style.width;
-                progressBar.style.width = '0';
+
+// ==========================================================================
+// 3D TILT EFFECT ON CARDS
+// ==========================================================================
+
+const tiltCards = document.querySelectorAll('.tilted-card-container');
+tiltCards.forEach(card => {
+    const inner = card.querySelector('.tilted-card-inner');
+    if (!inner) return;
+
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const xc = rect.width / 2;
+        const yc = rect.height / 2;
+
+        const rotateX = ((yc - y) / yc) * 10;
+        const rotateY = ((x - xc) / xc) * 10;
+
+        inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        inner.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    });
+});
+
+
+// ==========================================================================
+// PROJECTS FILTER GRID
+// ==========================================================================
+
+const projectsFilterButtons = document.querySelectorAll('#projects-filter-bar button');
+const projectsCards = document.querySelectorAll('.project-card-wrapper');
+
+projectsFilterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        projectsFilterButtons.forEach(b => {
+            b.classList.remove('bg-cyan-500', 'text-slate-900');
+            b.classList.add('bg-slate-800', 'text-slate-300', 'hover:bg-slate-700');
+        });
+        btn.classList.add('bg-cyan-500', 'text-slate-900');
+        btn.classList.remove('bg-slate-800', 'text-slate-300', 'hover:bg-slate-700');
+
+        const filter = btn.getAttribute('data-filter');
+
+        projectsCards.forEach(card => {
+            const stacks = card.getAttribute('data-stack').split(',');
+            if (filter === 'all' || stacks.includes(filter)) {
+                card.style.display = 'block';
+                card.style.opacity = '0';
                 setTimeout(() => {
-                    progressBar.style.width = width;
-                }, 100);
+                    card.style.transition = 'opacity 0.4s ease';
+                    card.style.opacity = '1';
+                }, 50);
+            } else {
+                card.style.display = 'none';
             }
-        }
-    });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.learning-card').forEach(card => {
-    progressObserver.observe(card);
-});
-
-// Form submission handler
-const contactForm = document.querySelector('.contact-form');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(contactForm);
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn ? submitBtn.textContent : 'Send Message';
-
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sending...';
-        }
-
-        try {
-            const response = await fetch('https://formsubmit.co/ajax/guhanchinnasamy5801@gmail.com', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json'
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to send message');
-            }
-
-            alert('Message sent successfully! I will get back to you soon.');
-            contactForm.reset();
-        } catch (error) {
-            alert('Unable to send message right now. Please try again or email me directly.');
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalBtnText;
-            }
-        }
-    });
-}
-
-// Parallax effect target
-const parallax = document.querySelector('.home-section');
-
-// Add hover effect to project cards
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
+        });
     });
 });
 
-// Navbar background on scroll
-const navbar = document.querySelector('.navbar');
 
-let scrollTicking = false;
-function updateOnScroll() {
-    const scrollY = window.pageYOffset;
+// ==========================================================================
+// TIMELINE SCROLL VERTICAL PROGRESS FILLER
+// ==========================================================================
 
-    scrollActive();
-
-    if (backToTop) {
-        if (scrollY > 300) {
-            backToTop.classList.add('show');
-        } else {
-            backToTop.classList.remove('show');
-        }
-    }
-
-    if (parallax) {
-        parallax.style.transform = `translate3d(0, ${scrollY * 0.2}px, 0)`;
-    }
-
-    if (navbar) {
-        if (scrollY > 50) {
-            navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-            navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
-        } else {
-            navbar.style.background = 'rgba(15, 23, 42, 0.8)';
-            navbar.style.boxShadow = 'none';
-        }
-    }
-
-    scrollTicking = false;
-}
+const timelineContainer = document.getElementById('timeline-container');
+const progressLine = document.getElementById('timeline-progress-line');
 
 window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-        requestAnimationFrame(updateOnScroll);
-        scrollTicking = true;
-    }
-}, { passive: true });
+    if (!timelineContainer || !progressLine) return;
+    const rect = timelineContainer.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
 
-// Random tech tag highlighting
-function highlightRandomTechTags() {
-    const techTags = document.querySelectorAll('.tech-tag');
-    
-    setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * techTags.length);
-        const randomTag = techTags[randomIndex];
-        
-        randomTag.style.transform = 'scale(1.1)';
-        randomTag.style.background = 'var(--primary-gradient)';
-        
-        setTimeout(() => {
-            randomTag.style.transform = 'scale(1)';
-            randomTag.style.background = 'rgba(102, 126, 234, 0.2)';
-        }, 1000);
-    }, 3000);
-}
+    const start = windowHeight * 0.8;
+    const end = windowHeight * 0.2;
 
-highlightRandomTechTags();
+    const containerHeight = rect.height;
+    const containerTop = rect.top;
 
-// Cursor trail effect (optional)
-const coords = { x: 0, y: 0 };
-const circles = document.querySelectorAll('.circle');
+    let progress = (start - containerTop) / (start - end + containerHeight - 200);
+    progress = Math.max(0, Math.min(1, progress));
 
-if (circles.length > 0) {
-    circles.forEach(function (circle) {
-        circle.x = 0;
-        circle.y = 0;
-    });
-
-    window.addEventListener('mousemove', function(e) {
-        coords.x = e.clientX;
-        coords.y = e.clientY;
-    });
-
-    function animateCircles() {
-        let x = coords.x;
-        let y = coords.y;
-        
-        circles.forEach(function (circle, index) {
-            circle.style.left = x - 12 + 'px';
-            circle.style.top = y - 12 + 'px';
-            
-            circle.style.scale = (circles.length - index) / circles.length;
-            
-            circle.x = x;
-            circle.y = y;
-
-            const nextCircle = circles[index + 1] || circles[0];
-            x += (nextCircle.x - x) * 0.3;
-            y += (nextCircle.y - y) * 0.3;
-        });
-        
-        requestAnimationFrame(animateCircles);
-    }
-
-    animateCircles();
-}
-
-// Initialize animations when page loads
-window.addEventListener('load', () => {
-    document.body.style.opacity = '1';
-    
-    // Trigger initial scroll to set active nav link
-    updateOnScroll();
+    progressLine.style.transform = `scaleY(${progress})`;
 });
 
-// Add loading state
-window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-});
 
-// Video Modal Functionality
-const videoModal = document.getElementById('demo-video');
-const demoButtons = document.querySelectorAll('a[href="#demo-video"]');
-const closeModal = document.querySelector('.close-modal');
+// ==========================================================================
+// CONTACT FORM SUBMISSION HANDLER & EMAIL COPYING
+// ==========================================================================
 
-demoButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
+const contactForm = document.getElementById('main-contact-form');
+const submitBtn = document.getElementById('submit-form-btn');
+
+if (contactForm && submitBtn) {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        console.log('Demo button clicked - opening modal');
-        videoModal.classList.add('active');
-        // Load video when modal opens (if using data-src)
-        const iframe = videoModal.querySelector('iframe');
-        if (iframe && iframe.dataset.src && !iframe.src) {
-            console.log('Loading video from data-src');
-            iframe.src = iframe.dataset.src;
-        }
-        console.log('Modal should be visible now');
-    });
-});
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="relative z-10 flex items-center gap-2">Sending... <span class="animate-spin">⏳</span></span>';
 
-if (closeModal) {
-    closeModal.addEventListener('click', () => {
-        console.log('Close button clicked');
-        videoModal.classList.remove('active');
-        // Pause video by reloading iframe
-        const iframe = videoModal.querySelector('iframe');
-        if (iframe && iframe.src) {
-            const iframeSrc = iframe.src;
-            iframe.src = '';
-            setTimeout(() => {
-                iframe.src = iframeSrc;
-            }, 100);
-        }
-    });
-}
+        const formData = new FormData(contactForm);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
 
-// Close modal when clicking outside
-if (videoModal) {
-    videoModal.addEventListener('click', (e) => {
-        if (e.target === videoModal) {
-            videoModal.classList.remove('active');
-            // Stop video playback
-            const iframe = videoModal.querySelector('iframe');
-            if (iframe && iframe.src) {
-                const iframeSrc = iframe.src;
-                iframe.src = '';
-                setTimeout(() => {
-                    iframe.src = iframeSrc;
-                }, 100);
+        try {
+            const response = await fetch('/api/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (response.ok && result.success) {
+                alert('Thank you! Your message has been sent successfully.');
+                contactForm.reset();
+            } else {
+                alert(result.error || 'Oops! There was a problem sending your message. Please try again.');
             }
+        } catch (error) {
+            alert('Oops! Network error occurred or the local server is not running.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
         }
     });
 }
 
-// Close modal with Escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && videoModal && videoModal.classList.contains('active')) {
-        videoModal.classList.remove('active');
-        const iframe = videoModal.querySelector('iframe');
-        if (iframe && iframe.src) {
-            const iframeSrc = iframe.src;
-            iframe.src = '';
-            setTimeout(() => {
-                iframe.src = iframeSrc;
-            }, 100);
-        }
-    }
-});
+const copyEmailBtn = document.getElementById('copy-email-btn');
+const toast = document.getElementById('email-copied-toast');
+if (copyEmailBtn && toast) {
+    copyEmailBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText('guhanchinnasamy5801@gmail.com').then(() => {
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+        });
+    });
+}
 
-console.log('Portfolio loaded successfully! ✨');
+
+// ==========================================================================
+// MOBILE MENU TOGGLE
+// ==========================================================================
+
+const menuBtn = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    });
+}
+
