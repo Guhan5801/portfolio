@@ -368,9 +368,13 @@ const techBadges = [
     { name: "Python", cat: "language", icon: "🐍" },
     { name: "C", cat: "language", icon: "💻" },
     { name: "JavaScript", cat: "language", icon: "🟨" },
+    { name: "TypeScript", cat: "language", icon: "🔷" },
     { name: "Dart", cat: "language", icon: "🎯" },
     { name: "SQL", cat: "language", icon: "🗄️" },
+    { name: "Next.js", cat: "frontend", icon: "▲" },
+    { name: "React", cat: "frontend", icon: "⚛️" },
     { name: "FastAPI", cat: "backend", icon: "⚡" },
+    { name: "Node.js", cat: "backend", icon: "🟢" },
     { name: "NLP", cat: "ai", icon: "🗣️" },
     { name: "Regex Parsing", cat: "ai", icon: "🔍" },
     { name: "AI Optimization", cat: "ai", icon: "⚙️" },
@@ -378,6 +382,7 @@ const techBadges = [
     { name: "System Prompts", cat: "ai", icon: "🧠" },
     { name: "Context Optimization", cat: "ai", icon: "📊" },
     { name: "HTML5 / CSS3", cat: "frontend", icon: "🎨" },
+    { name: "TailwindCSS", cat: "frontend", icon: "🌊" },
     { name: "Figma Essentials", cat: "frontend", icon: "📐" },
     { name: "Supabase", cat: "database", icon: "⚡" },
     { name: "Hive DB", cat: "database", icon: "📦" },
@@ -604,4 +609,23 @@ if (menuBtn && mobileMenu) {
         });
     });
 }
+
+// Fix: ensure external project "Demo" and "Visit" links open even if other handlers
+// intercept clicks. Use capture phase to run before other listeners.
+document.addEventListener('click', function (e) {
+    try {
+        const a = e.target.closest && e.target.closest('a');
+        if (!a) return;
+        const href = a.getAttribute('href') || '';
+        // Only handle absolute external links (http/https) and links inside project cards
+        if ((href.startsWith('http://') || href.startsWith('https://')) && (a.closest('.project-card-wrapper') || a.getAttribute('title') || a.classList.contains('group'))) {
+            e.preventDefault();
+            const target = a.getAttribute('target') || '_blank';
+            window.open(href, target);
+        }
+    } catch (err) {
+        // swallow errors to avoid breaking other code
+        console.error('Link handler error', err);
+    }
+}, true);
 
