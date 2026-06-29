@@ -475,6 +475,15 @@ tiltCards.forEach(card => {
     });
 });
 
+// Stabilize links inside tilted cards to ensure clicks register reliably
+document.querySelectorAll('.tilted-card-container a').forEach(link => {
+    ['mousemove', 'pointermove', 'mousedown', 'mouseup', 'mouseover', 'mouseout'].forEach(evt => {
+        link.addEventListener(evt, (e) => {
+            e.stopPropagation();
+        }, { passive: false });
+    });
+});
+
 
 // ==========================================================================
 // PROJECTS FILTER GRID
