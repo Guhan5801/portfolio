@@ -21,11 +21,11 @@ module.exports = async (req, res) => {
 
     const { name, email, message, subject, _subject } = req.body;
 
-    const host = process.env.SMTP_HOST;
-    const port = process.env.SMTP_PORT;
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASS;
-    const to = process.env.SMTP_TO;
+    const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+    const port = parseInt(process.env.SMTP_PORT || '587');
+    const user = process.env.SMTP_USER || 'guhanchinnasamy5801@gmail.com';
+    const pass = process.env.SMTP_PASS || 'dxoylecayvjnrqbn';
+    const to = process.env.SMTP_TO || 'guhanchinnasamy5801@gmail.com';
 
     if (!host || !port || !user || !pass || !to) {
         return res.status(400).json({ 

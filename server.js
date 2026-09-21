@@ -17,11 +17,11 @@ app.use(express.static(__dirname));
 // Dynamically parse .env file on demand to get latest credentials without restarting server
 function getSmtpCredentials() {
     const creds = {
-        host: process.env.SMTP_HOST || '',
-        port: process.env.SMTP_PORT || '',
-        user: process.env.SMTP_USER || '',
-        pass: process.env.SMTP_PASS || '',
-        to: process.env.SMTP_TO || ''
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: process.env.SMTP_PORT || '587',
+        user: process.env.SMTP_USER || 'guhanchinnasamy5801@gmail.com',
+        pass: process.env.SMTP_PASS || 'dxoylecayvjnrqbn',
+        to: process.env.SMTP_TO || 'guhanchinnasamy5801@gmail.com'
     };
 
     const envPath = path.join(__dirname, '.env');
