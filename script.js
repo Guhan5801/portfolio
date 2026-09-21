@@ -326,7 +326,7 @@ window.addEventListener('scroll', () => {
 // ==========================================================================
 
 const typewriterText = document.getElementById('typewriter-text');
-const roles = ['AI Fullstack Developer', 'Prompt Engineer & AI Specialist', 'Fullstack Engineer'];
+const roles = ['Python & AI Developer', 'AI Fullstack Developer', 'Prompt Engineer & AI Specialist'];
 let roleIdx = 0;
 let charIdx = 0;
 let isDeleting = false;
@@ -366,28 +366,32 @@ if (typewriterText) {
 
 const techBadges = [
     { name: "Python", cat: "language", icon: "🐍" },
-    { name: "C", cat: "language", icon: "💻" },
+    { name: "C#", cat: "language", icon: "🔷" },
     { name: "JavaScript", cat: "language", icon: "🟨" },
-    { name: "TypeScript", cat: "language", icon: "🔷" },
+    { name: "TypeScript", cat: "language", icon: "💎" },
     { name: "Dart", cat: "language", icon: "🎯" },
     { name: "SQL", cat: "language", icon: "🗄️" },
-    { name: "Next.js", cat: "frontend", icon: "▲" },
-    { name: "React", cat: "frontend", icon: "⚛️" },
     { name: "FastAPI", cat: "backend", icon: "⚡" },
     { name: "Node.js", cat: "backend", icon: "🟢" },
-    { name: "NLP", cat: "ai", icon: "🗣️" },
-    { name: "Regex Parsing", cat: "ai", icon: "🔍" },
-    { name: "AI Optimization", cat: "ai", icon: "⚙️" },
-    { name: "Prompt Design", cat: "ai", icon: "✍️" },
-    { name: "System Prompts", cat: "ai", icon: "🧠" },
-    { name: "Context Optimization", cat: "ai", icon: "📊" },
-    { name: "HTML5 / CSS3", cat: "frontend", icon: "🎨" },
+    { name: "REST APIs", cat: "backend", icon: "🔌" },
+    { name: "React", cat: "frontend", icon: "⚛️" },
+    { name: "Next.js", cat: "frontend", icon: "▲" },
     { name: "TailwindCSS", cat: "frontend", icon: "🌊" },
-    { name: "Figma Essentials", cat: "frontend", icon: "📐" },
+    { name: "HTML5 / CSS3", cat: "frontend", icon: "🎨" },
+    { name: "Figma", cat: "frontend", icon: "📐" },
+    { name: "PostgreSQL", cat: "database", icon: "🐘" },
+    { name: "Redis", cat: "database", icon: "🔴" },
     { name: "Supabase", cat: "database", icon: "⚡" },
     { name: "Hive DB", cat: "database", icon: "📦" },
-    { name: "PostgreSQL", cat: "database", icon: "🐘" },
     { name: "SQLite", cat: "database", icon: "💾" },
+    { name: "Generative AI", cat: "ai", icon: "✨" },
+    { name: "Prompt Engineering", cat: "ai", icon: "✍️" },
+    { name: "NLP Systems", cat: "ai", icon: "🗣️" },
+    { name: "Machine Learning", cat: "ai", icon: "🤖" },
+    { name: "XGBoost & CatBoost", cat: "ai", icon: "📊" },
+    { name: "Antigravity", cat: "cloud", icon: "🚀" },
+    { name: "Postman", cat: "cloud", icon: "📬" },
+    { name: "Claude & ChatGPT", cat: "cloud", icon: "🧠" },
     { name: "Git & GitHub", cat: "cloud", icon: "🐙" },
     { name: "VS Code", cat: "cloud", icon: "📝" }
 ];
